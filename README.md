@@ -229,11 +229,11 @@ A top cosine match is not automatically the correct answer; a similarity thresho
 
 The first run requires internet to pull images/models and enough free disk. The local model's **download size is not its memory footprint**. Apple Silicon ARM64 image support and local acceleration should be checked on the actual device; this release is not claimed ARM-certified.
 
-**1. Clone or download** the repository and open a shell in its root (the directory containing `compose.yaml`). Replace `<REPO_URL>` with the actual GitHub URL:
+**1. Clone or download** the repository and open a shell in its root (the directory containing `compose.yaml`):
 
 ```bash
-git clone <REPO_URL>
-cd <repo-directory>
+git clone https://github.com/erata/virtual-bank-agent.git
+cd virtual-bank-agent
 ```
 
 **2. Start local Ollama + API + UI + seed + document ingestion (no cloud API key):**
