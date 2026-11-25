@@ -2,7 +2,7 @@
 
 **A cross-platform .NET 10 + Angular engineering reference application** demonstrating Clean Architecture, a modular monolith, Keycloak identity, RBAC/ABAC, PostgreSQL Row-Level Security, EF Core Code First, Semantic Kernel tool calling and **permission-aware multilingual RAG** with pgvector.
 
-> **Reference implementation, NOT a real bank.** All organizations, customers, accounts, IBANs, payments, policies, salaries and dates are deliberately synthetic. This revision was built, unit/architecture-tested and exercised end-to-end locally with Docker Compose (Keycloak, PostgreSQL + pgvector, OpenRouter and Ollama). The Playwright e2e suite, ARM64 images and production-like deployments were **not** run; a checked-in test is not proof that it passes in your environment. See [validation status](docs/VALIDATION_STATUS.md) and the [publication gate](docs/PUBLICATION_QUALITY_GATE.md).
+> **Reference implementation, NOT a real bank.** All organizations, customers, accounts, IBANs, payments, policies, salaries and dates are deliberately synthetic. This revision was built, unit/architecture-tested and exercised end-to-end locally with Docker Compose (Keycloak, PostgreSQL + pgvector, OpenRouter and Ollama). The Playwright e2e suite runs in CI against the Compose stack; ARM64 images and production-like deployments were **not** run; a checked-in test is not proof that it passes in your environment. See [validation status](docs/VALIDATION_STATUS.md) and the [publication gate](docs/PUBLICATION_QUALITY_GATE.md).
 
 ![VirtualBank layered modular monolith](docs/assets/architecture-overview.svg)
 
@@ -437,7 +437,7 @@ An index of all documents, including historical review records, is in [docs/READ
 
 - **Implemented:** human-confirmed changes (credit approve/reject, notes, transfers incl. internal credit to another customer, transfers between own accounts, standing orders, credit applications, branch cash desk, document ACL administration), multilingual UI (EN/DE/TR) and permission-derived menus.
 - **Not implemented:** persistent permission-rechecked conversation history, durable (database-backed) confirmation cards, an immutable audit store with an auditor screen, HR and operations data (see [role gaps](#role-gaps-known-not-yet-implemented)), execution of planned payments on their due date, production secret storage, full folder ACL inheritance and robust assignment-projection revocation synchronization.
-- **Not proven here:** the Playwright e2e suite, ARM64 images, load/fault-injection behaviour and production deployment. Live semantic quality depends on the chosen model.
+- **Not proven here:** ARM64 images, load/fault-injection behaviour and production deployment. The Playwright e2e suite runs in CI against the Compose stack (the PDF document test only when documents are indexed). Live semantic quality depends on the chosen model.
 - **Production caution:** do not send real account data to an external model or deploy the local dev realm publicly. The code is an educational **engineering reference**, not a certified banking, security or compliance system.
 
 **License:** [MIT](LICENSE). Demo-only secrets and synthetic financial fixtures are for isolated local use.
