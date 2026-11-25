@@ -9,7 +9,7 @@
 ### Contents
 
 1. [Why VirtualBank?](#why-virtualbank) · [Purpose and scope](#purpose-and-scope-what-this-project-is-not)
-2. [Features and sample user journeys](#features-and-sample-user-journeys)
+2. [Features and sample user journeys](#features-and-sample-user-journeys) · [Screenshots](#screenshots-same-app-different-roles-and-languages)
 3. [Stack and architecture](#stack-and-architecture)
 4. [Authentication and security boundaries](#authentication-and-security-boundaries)
 5. [AI Agent and multilingual RAG](#ai-agent-and-multilingual-rag)
@@ -63,9 +63,71 @@ Use it to learn and discuss patterns; do not reuse it as the basis of a financia
 
 The assistant understands English, German and Turkish; the UI is available in English, German and Turkish (picker at the top right, browser language by default). It offers role-aware capability suggestions, response notices, tool-call information and structured authorized result tables. The document search endpoint additionally returns authorized, source-linked excerpts. **The model does not create permissions or alter a database record merely by choosing a tool:** every change is a single-use confirmation card that the same user confirms. See [Banking operations](docs/BANKING_OPERATIONS.md).
 
-### Screenshots and demonstrations
+### Screenshots: same app, different roles and languages
 
-This repository includes **real architecture diagrams**, not invented browser screenshots. For a public portfolio release, capture screenshots from a **successfully running** Angular UI: advisor customer list, customer multi-currency balances, the Assistant's tool-call trace, and a document answer with citations/denial. Never paste an actual token or secret into a screenshot. A proposed 60–90 second demo is described in [the publication gate](docs/PUBLICATION_QUALITY_GATE.md).
+Real screenshots of the local stack (OpenRouter `openai/gpt-4o`, synthetic seed data). The UI language is chosen at the
+top right; the assistant answers in the language of the question. Every change the assistant proposes appears as a
+**confirmation card**: nothing happens until the same user presses the button, and every check runs again then.
+
+#### Bank customer: transfer to another customer (English)
+
+`emilia.customer` asks: *"Send 100 EUR to Elif Yılmaz, DE06 1001 0010 0000 0050 03, reference: dinner"*. The model
+calls `plan_transfer`; the application validates the IBAN, picks Emilia's EUR account and checks cover. The card shows
+the masked IBAN and that a transfer dated today is booked immediately. Elif banks here, so on confirmation her account
+is credited in the same database transaction.
+
+![Customer transfer card in English](docs/assets/screenshots/customer-transfer-en.png)
+
+#### Bank customer: transfer between own accounts (Turkish)
+
+`deniz.customer` writes *"A-20011 hesabımdan A-20012 hesabıma 250 EUR aktar"*. The UI is in Turkish, the answer is in
+Turkish, and the card shows both accounts with their current balances. Below it, the assistant lists only Deniz's own
+accounts; other customers' accounts are not reachable for this role (RLS).
+
+![Own-account transfer card in Turkish](docs/assets/screenshots/customer-own-transfer-tr.png)
+
+#### Credit approver: prepare an approval (German)
+
+`max.approver` asks *"Bereite die Genehmigung des Kreditantrags K-100 vor. Antworte in einem Satz."*. The card lists the checks that passed:
+application submitted, amount within his 50,000 EUR limit, and not prepared by him (four-eyes principle). The model
+cannot approve anything itself; only Max's own click executes the approval, under a separate database role.
+
+![Approval card in German](docs/assets/screenshots/approver-approval-de.png)
+
+#### Customer advisor: a combined request with a partial answer (German)
+
+`anna.berater` asks for two things at once: *"Zeig mir meine Kunden. Zeig mir außerdem ihre Kreditanträge."* The
+assistant runs two tools. Customers are answered (only the three Stuttgart customers of her branch); the credit part is
+refused by the application with a deterministic notice (`CREDIT_READ_REQUIRED`), and the reply is marked as partial.
+
+![Partial answer for an advisor in German](docs/assets/screenshots/advisor-partial-de.png)
+
+#### Credit analyst: document search with sources (English)
+
+`mehmet.kredit` asks *"Compare the 2023 and 2026 credit approval policies in three short sentences and name the source
+documents."* The answer comes from pgvector retrieval over documents his role may read. The sources include a German
+and a Turkish document: the search is cross-lingual, and the access rules are checked before any text reaches the model.
+
+![RAG answer with sources in English](docs/assets/screenshots/analyst-rag-en.png)
+
+#### Platform administrator: refused (Turkish)
+
+`lena.admin` asks *"Müşteri kayıtlarını getir"* (fetch the customer records). An administrator title is not a
+business-data permission: her role has no customer tool, so no customer data can be fetched, and the assistant
+explains what the role may do instead.
+
+![Admin refused in Turkish](docs/assets/screenshots/admin-denied-tr.png)
+
+#### The same operations without the assistant
+
+Every assistant action also exists as a normal screen. `thomas.customer` sees *My banking* (English): balances per
+currency (never added across currencies), forms for transfers, transfers between own accounts and standing orders,
+upcoming payments and standing orders with cancel/pause. `max.approver` sees the credit application in German, with
+"check approval" and "check rejection"; both lead to the same confirmation card.
+
+| My banking (customer, EN) | Credit application (approver, DE) |
+|---|---|
+| ![My banking in English](docs/assets/screenshots/customer-banking-en.png) | ![Credit application detail in German](docs/assets/screenshots/approver-credit-detail-de.png) |
 
 ## Stack and architecture
 
