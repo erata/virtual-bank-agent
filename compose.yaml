@@ -1,0 +1,188 @@
+# Canonical local runtime (ADR-0001).
+# Current state: PostgreSQL bootstrap + EF DbMigrator (Code First), Keycloak, API (Customers + Credit + Documents) and UI.
+# Credit approval over HTTP is not implemented yet (M6); Angular UI is included.
+#
+# All credentials are DEVELOPMENT-ONLY. See .env.example.
+
+name: virtual-bank-agent
+
+services:
+  postgres:
+    # pgvector is not used before M3, but pinning the image now avoids a database rebuild later.
+    image: pgvector/pgvector:0.8.0-pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_SUPERUSER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:-postgres-dev-only}
+      POSTGRES_DB: postgres
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - type: bind
+        source: ./infra/postgres/init
+        target: /docker-entrypoint-initdb.d
+        read_only: true
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      # PostgreSQL ready for the one-shot EF Core migrator.
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # Code First migrations + deterministic EF seeding. Never executed by runtime API credentials.
+  db-migrate:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        PROJECT: tools/VirtualBank.DbMigrator/VirtualBank.DbMigrator.csproj
+        ASSEMBLY: VirtualBank.DbMigrator.dll
+    environment:
+      VIRTUALBANK_REPO: /repo-seed
+      MIGRATOR_CUSTOMER_DB: Host=postgres;Database=customer_db;Username=customer_migrator;Password=customer-migrator-dev-only
+      MIGRATOR_CREDIT_DB: Host=postgres;Database=credit_db;Username=credit_migrator;Password=credit-migrator-dev-only
+      MIGRATOR_DOCUMENTS_DB: Host=postgres;Database=documents_db;Username=document_migrator;Password=document-migrator-dev-only
+    volumes:
+      - type: bind
+        source: ./infra/seed
+        target: /repo-seed/infra/seed
+        read_only: true
+      - type: bind
+        source: ./infra/keycloak/realm-virtual-bank.json
+        target: /repo-seed/infra/keycloak/realm-virtual-bank.json
+        read_only: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin-dev-only}
+      # Issuer stays http://localhost:8080/realms/virtual-bank for browser and containers alike;
+      # containers reach Keycloak through the internal hostname (backchannel).
+      KC_HOSTNAME: http://localhost:${KEYCLOAK_PORT:-8080}
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HEALTH_ENABLED: "true"
+      KC_HTTP_ENABLED: "true"
+    ports:
+      - "127.0.0.1:${KEYCLOAK_PORT:-8080}:8080"
+    volumes:
+      - type: bind
+        source: ./infra/keycloak/realm-virtual-bank.json
+        target: /opt/keycloak/data/import/realm-virtual-bank.json
+        read_only: true
+    healthcheck:
+      # The image has no curl; probe the management port with bash.
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  # One API for both modules (Customers, Credit). Each module still reaches only its own database with its own
+  # least-privilege login: customer_api for customer_db, credit_api for credit_db.
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        PROJECT: src/VirtualBank.Web/VirtualBank.Web.csproj
+        ASSEMBLY: VirtualBank.Web.dll
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      Authorization__CatalogPath: /config/permissions.json
+      # Tokens carry the browser-facing issuer; discovery and JWKS are fetched through the internal hostname.
+      Keycloak__Issuer: http://localhost:${KEYCLOAK_PORT:-8080}/realms/${KEYCLOAK_REALM:-virtual-bank}
+      Keycloak__Audience: virtual-bank-api
+      Keycloak__MetadataAddress: http://keycloak:8080/realms/${KEYCLOAK_REALM:-virtual-bank}/.well-known/openid-configuration
+      Keycloak__PublicBaseUrl: http://localhost:${KEYCLOAK_PORT:-8080}
+      Keycloak__InternalBaseUrl: http://keycloak:8080
+      Keycloak__AllowInsecureDevelopmentHttp: "true"
+      ConnectionStrings__CustomerDb: Host=postgres;Database=customer_db;Username=customer_api;Password=customer-api-dev-only
+      ConnectionStrings__CreditDb: Host=postgres;Database=credit_db;Username=credit_api;Password=credit-api-dev-only
+      ConnectionStrings__CreditApprovalDb: Host=postgres;Database=credit_db;Username=credit_approval;Password=credit-approval-dev-only
+      ConnectionStrings__DocumentsDb: Host=postgres;Database=documents_db;Username=document_api;Password=document-api-dev-only
+      ConnectionStrings__DocumentWriterDb: Host=postgres;Database=documents_db;Username=document_ingest;Password=document-ingest-dev-only
+      ConnectionStrings__DocumentAclAdminDb: Host=postgres;Database=documents_db;Username=document_acl_admin;Password=document-acl-admin-dev-only
+      Documents__Provider: ${DOCUMENTS_EMBEDDING_PROVIDER:-Ollama}
+      Documents__Endpoint: ${DOCUMENTS_EMBEDDING_ENDPOINT:-http://ollama:11434/}
+      Documents__Model: ${DOCUMENTS_EMBEDDING_MODEL:-bge-m3}
+      Documents__Dimensions: ${DOCUMENTS_EMBEDDING_DIMENSIONS:-1024}
+      Documents__SampleDirectory: /sample-docs
+      Documents__MinimumCosineSimilarity: ${DOCUMENTS_MIN_SIMILARITY:-0.45}
+      # Real local LLM starter; override via .env for OpenRouter/OpenAI; Offline is test-only.
+      # NO dependency on the optional ollama service: cloud mode won't pull local images.
+      Assistant__Provider: ${ASSISTANT_PROVIDER:-Ollama}
+      Assistant__Model: ${ASSISTANT_MODEL:-qwen3:4b-instruct}
+      Assistant__Endpoint: ${ASSISTANT_ENDPOINT:-http://ollama:11434/v1/}
+      Assistant__TimeoutSeconds: ${ASSISTANT_TIMEOUT_SECONDS:-240}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    volumes:
+      - type: bind
+        source: ./policies/permissions.json
+        target: /config/permissions.json
+        read_only: true
+      - type: bind
+        source: ./sample-docs
+        target: /sample-docs
+        read_only: true
+    ports:
+      - "127.0.0.1:${API_PORT:-8081}:8080"
+    # Lets the API reach a natively installed Ollama (start-local.ps1 -NativeOllama). Docker Desktop already
+    # provides this name; the mapping makes it work on Linux engines too. Unused in the default container setup.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      db-migrate:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      # dash (/bin/sh in Debian images) has no /dev/tcp, so the probe runs in bash explicitly.
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8080 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '200 OK' <&3"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # Angular SPA behind nginx: one browser origin for the app and /api (reverse proxy to the API).
+  # The port stays 4200 because the Keycloak client virtual-bank-ui allows only http://localhost:4200 redirects.
+  frontend:
+    build:
+      context: ./src/Frontend/virtual-bank-ui
+    environment:
+      KEYCLOAK_PUBLIC_URL: http://localhost:${KEYCLOAK_PORT:-8080}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-virtual-bank}
+      KEYCLOAK_UI_CLIENT: virtual-bank-ui
+      API_UPSTREAM: api:8080
+    ports:
+      - "127.0.0.1:4200:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # This is opt-in, NEVER a dependency of api; cloud users won't download it.
+  # Windows scripts/windows/start-local.ps1 and Linux/macOS scripts/unix/start-local.sh
+  # activate `--profile ai` and pull the two configured local models.
+  # Selecting Ollama in .env alone does not activate this Compose profile.
+  ollama:
+    profiles: ["ai"]
+    image: ollama/ollama:0.12.10
+    volumes:
+      - ollama-models:/root/.ollama
+    ports:
+      - "127.0.0.1:11434:11434"
+
+volumes:
+  postgres-data:
+  ollama-models:

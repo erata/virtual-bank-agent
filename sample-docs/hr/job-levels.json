@@ -1,0 +1,26 @@
+{
+  "title": "İK Kariyer Seviyeleri",
+  "policy": "Çalışan seviye politikası maaş bandı ve unvan yönetimini tanımlar. Kullanıcının gizlilik seviyesi yetersizse veya İK yetkisi yoksa içerik getirilmez. Denetçi yalnızca temizlenmiş denetim meta verilerini görür.",
+  "organization": "VirtualBank",
+  "synthetic": true,
+  "syntheticLevels": [
+    {
+      "grade": "H1",
+      "description": "Örnek başlangıç seviyesi; gerçek maaş veya istihdam verisi içermez"
+    },
+    {
+      "grade": "H2",
+      "description": "Örnek uzman seviyesi; rol ve gizlilik kontrolleri yine geçerlidir"
+    },
+    {
+      "grade": "H3",
+      "description": "Örnek yönetici seviyesi; ayrıcalıklı iş verisi erişimi anlamına gelmez"
+    }
+  ],
+  "authorization": "Çok gizli sınıflandırma ve açık rol ACL'si birlikte gereklidir. Platform yöneticisi İK verisi okuyucusu değildir. Yasaklama izne üstün gelir.",
+  "testQuestions": [
+    "İK seviye politikası kime açıktır?",
+    "Bir yönetici gizli maaş seviyelerini okuyabilir mi?",
+    "Gizlilik seviyesi ile belge rol ACL'si arasındaki fark nedir?"
+  ]
+}

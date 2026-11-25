@@ -1,0 +1,38 @@
+meta {
+  name: Admin uses the assistant but gets no business data
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiBaseUrl}}/api/assistant/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{lenaToken}}
+}
+
+body:json {
+  {
+    "message": "show customers"
+  }
+}
+
+tests {
+  // platform-admin has assistant.use (to ask about its own access) but no customer permission:
+  // an administrative title is not a business-data bypass.
+  test("status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("customer tool is denied by the policy gate", function() {
+    const tools = res.getBody().toolCalls.map((c) => c.tool + ":" + c.status + ":" + c.noticeCode);
+    expect(tools).to.include("list_customers:DENIED:ASSISTANT_TOOL_NOT_PERMITTED");
+    expect(res.getBody().notices).to.include("ASSISTANT_TOOL_NOT_PERMITTED");
+  });
+  test("no customer data in the response", function() {
+    expect(res.getBody().tables || []).to.have.lengthOf(0);
+    expect(JSON.stringify(res.getBody())).to.not.match(/C-\d{4}/);
+  });
+}

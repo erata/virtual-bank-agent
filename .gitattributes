@@ -1,0 +1,26 @@
+# Line endings: every text file is stored AND checked out with LF on all platforms.
+# Shell scripts, nginx templates and Dockerfiles are copied into Linux containers, where CRLF breaks them
+# ("bad interpreter", "\r: command not found"). .NET, Angular, PowerShell 7 / Windows PowerShell and Git Bash
+# all read LF files, and sample documents keep stable content hashes for ingestion.
+* text=auto eol=lf
+
+# Windows-only batch files need CRLF (none today; kept for safety).
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files: never convert, never diff as text.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.pdf   binary
+*.docx  binary
+*.xlsx  binary
+*.pptx  binary
+*.zip   binary
+*.gz    binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary

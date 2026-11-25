@@ -1,0 +1,21 @@
+meta {
+  name: Mehmet reads assigned Munich customer C-5002
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers/C-5002
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{mehmetToken}}
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

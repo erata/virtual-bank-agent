@@ -1,0 +1,21 @@
+meta {
+  name: Approver cannot see draft K-200
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{apiBaseUrl}}/api/credit/applications/K-200
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{maxToken}}
+}
+
+tests {
+  test("status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

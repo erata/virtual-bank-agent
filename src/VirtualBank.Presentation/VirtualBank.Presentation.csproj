@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- HTTP surface: endpoints, request/response contracts, the use-case result → HTTP mapping and the principal
+       filter. Knows the Application layer only — not the database, not the identity-provider library. -->
+  <PropertyGroup>
+    <RootNamespace>VirtualBank.Presentation</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="../VirtualBank.Application/VirtualBank.Application.csproj" />
+  </ItemGroup>
+</Project>

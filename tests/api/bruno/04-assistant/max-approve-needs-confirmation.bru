@@ -1,0 +1,34 @@
+meta {
+  name: Approver: approval needs a human confirmation
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{apiBaseUrl}}/api/assistant/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{maxToken}}
+}
+
+body:json {
+  {
+    "message": "approve K-100"
+  }
+}
+
+tests {
+  test("status is 200 and only a confirmation card was prepared", function() {
+    // ADR-0014: the model may only PREPARE an approval; executing it needs the approver's own
+    // POST /api/actions/{id}/confirm. max-approval-not-executed checks that K-100 is unchanged.
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().toolCalls[0].tool).to.equal("approve_credit_application");
+    const cards = res.getBody().actions;
+    expect(cards).to.have.lengthOf(1);
+    expect(cards[0].kind).to.equal("credit.approve");
+    expect(cards[0].facts.find((f) => f.key === "application").value).to.equal("K-100");
+  });
+}

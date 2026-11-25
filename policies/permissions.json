@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "description": "Central permission catalog and role-to-permission mapping. Application code checks permissions, never role names.",
+  "permissions": [
+    {
+      "id": "customer.read",
+      "description": "Read customers of the caller's own branch."
+    },
+    {
+      "id": "customer.read.self",
+      "description": "Read only the customer row bound to the validated identity subject."
+    },
+    {
+      "id": "customer.read.assigned",
+      "description": "Read customers linked to credit applications assigned to the caller."
+    },
+    {
+      "id": "customer.read-sensitive",
+      "description": "Read unmasked sensitive customer fields (IBAN, date of birth, contact data)."
+    },
+    {
+      "id": "account.cash",
+      "description": "Book cash deposits and withdrawals on accounts of customers of the caller's own branch (always with explicit confirmation)."
+    },
+    {
+      "id": "customer.payment.write",
+      "description": "Plan transfers, cancel planned payments and pause/resume standing orders on the caller's OWN accounts (always with explicit confirmation)."
+    },
+    {
+      "id": "credit.read",
+      "description": "Read credit applications assigned to the caller."
+    },
+    {
+      "id": "credit.note.write",
+      "description": "Add notes to credit applications the caller may read."
+    },
+    {
+      "id": "credit.approve",
+      "description": "Approve submitted credit applications within the caller's approval limit."
+    },
+    {
+      "id": "credit.request",
+      "description": "Apply for a credit as a bank customer and read the applications one prepared oneself."
+    },
+    {
+      "id": "employee.read",
+      "description": "Read employee master data."
+    },
+    {
+      "id": "employee.salary.read",
+      "description": "Read employee salary data and salary bands."
+    },
+    {
+      "id": "operations.read",
+      "description": "Read operational data such as failed jobs and incidents."
+    },
+    {
+      "id": "audit.read",
+      "description": "Read sanitized authorization audit records."
+    },
+    {
+      "id": "diagnostics.read",
+      "description": "View the privileged, sanitized authorization trace."
+    },
+    {
+      "id": "document.read",
+      "description": "Search and read documents permitted by the document ACL."
+    },
+    {
+      "id": "document.ingest",
+      "description": "Ingest documents and update ingestion metadata."
+    },
+    {
+      "id": "document.acl.manage",
+      "description": "Manage canonical document ACLs without content access."
+    },
+    {
+      "id": "system.configure",
+      "description": "Change platform configuration."
+    },
+    {
+      "id": "assistant.use",
+      "description": "Use the AI assistant. Its tools act with the caller's own permissions; human principals only."
+    }
+  ],
+  "roles": {
+    "platform-admin": [
+      "system.configure",
+      "operations.read",
+      "assistant.use"
+    ],
+    "security-admin": [
+      "document.acl.manage"
+    ],
+    "auditor": [
+      "audit.read",
+      "diagnostics.read"
+    ],
+    "customer-advisor": [
+      "customer.read",
+      "document.read",
+      "assistant.use",
+      "account.cash"
+    ],
+    "credit-analyst": [
+      "customer.read.assigned",
+      "credit.read",
+      "credit.note.write",
+      "document.read",
+      "assistant.use"
+    ],
+    "credit-approver": [
+      "credit.read",
+      "credit.approve",
+      "document.read",
+      "assistant.use"
+    ],
+    "hr-specialist": [
+      "employee.read",
+      "employee.salary.read",
+      "document.read",
+      "assistant.use"
+    ],
+    "operations-operator": [
+      "operations.read",
+      "document.read"
+    ],
+    "svc-ingestion": [
+      "document.ingest"
+    ],
+    "svc-reporting": [
+      "operations.read"
+    ],
+    "bank-customer": [
+      "customer.read.self",
+      "customer.read-sensitive",
+      "assistant.use",
+      "document.read",
+      "customer.payment.write",
+      "credit.request"
+    ]
+  }
+}

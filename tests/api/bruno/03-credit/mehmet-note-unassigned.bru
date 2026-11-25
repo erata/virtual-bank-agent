@@ -1,0 +1,27 @@
+meta {
+  name: Note on unassigned application answers 404
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{apiBaseUrl}}/api/credit/applications/K-200/notes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{mehmetToken}}
+}
+
+body:json {
+  {
+    "text": "Not mine."
+  }
+}
+
+tests {
+  test("status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Test support: loads personas from the Keycloak realm, resources from the seed fixtures
+       and evaluates authorization-matrix cases. No test-framework dependency, no packages. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/VirtualBank.Infrastructure/VirtualBank.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

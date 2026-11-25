@@ -1,0 +1,21 @@
+meta {
+  name: Token without virtual-bank-api audience answers 401
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers/C-1002
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{reportingToken}}
+}
+
+tests {
+  test("status is 401", function() {
+    expect(res.getStatus()).to.equal(401);
+  });
+}

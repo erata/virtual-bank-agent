@@ -1,0 +1,15 @@
+# IT-Sicherheit und Zugriffsgrenzen
+
+Das Prinzip der minimalen Rechte gilt für Personen, Dienste und Datenbankrollen. Der Service-Account svc-ingestion kann Dokumente importieren, aber keine Kundendaten lesen. PostgreSQL RLS nutzt transaktionslokale Werte und muss beim Connection Pooling getestet werden.
+
+## Vertrauenswürdiger Kontext
+Die JWT-Signatur, der Issuer, die Audience und die Gültigkeitsdauer werden in der API geprüft. Nur daraus abgeleitete Identitäts- und Berechtigungsdaten dürfen in die transaktionslokalen PostgreSQL Einstellungen übernommen werden. Eine vom Benutzer eingegebene Rollenbezeichnung ist kein gültiger Identitätsnachweis.
+
+## Funktionsaufrufe
+Ein LLM darf einen Tool-Aufruf vorschlagen, aber die Ausführung übernimmt nur der vertrauenswürdige C# Code. ToolPolicyGate prüft Argumente, Aufrufbudget und das zulässige Risikoniveau. Die Application Policy prüft danach die konkrete Kunden-, Kredit- oder Dokumentressource. Ein Prompt kann keine fehlende Berechtigung ersetzen.
+
+## Dokumentensuche
+Die RAG-Suche berücksichtigt Clearance, Rolle, Gruppe, Branch und explizite Verweigerungsregeln. Verbotene Dokumentteile dürfen nicht im Modellkontext landen. Ein hoher Kosinus-Ähnlichkeitswert ist noch kein Beleg dafür, dass die Antwort sachlich korrekt ist. Ohne ausreichende Quelle muss der Assistent die Unsicherheit offenlegen.
+
+## Betriebsgrenzen
+RLS reduziert Fehler bei Datenabfragen, schützt aber nicht vollständig gegen eine kompromittierte vertrauenswürdige API. Für produktive Systeme werden separate Audit-Speicherung, Secret-Management, eine sichere Deploymentschicht und überprüfte Freigabeprozesse benötigt.

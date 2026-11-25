@@ -1,0 +1,28 @@
+meta {
+  name: Anna reads C-1002 with sensitive fields masked
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers/C-1002
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{annaToken}}
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("sensitive fields are masked", function() {
+    const body = res.getBody();
+    expect(body.sensitiveFieldsMasked).to.equal(true);
+    expect(body.iban).to.equal(null);
+    expect(body.email).to.equal(null);
+    expect(body.dateOfBirth).to.equal(null);
+  });
+}

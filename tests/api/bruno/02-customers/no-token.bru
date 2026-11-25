@@ -1,0 +1,17 @@
+meta {
+  name: Missing token answers 401
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers/C-1002
+  body: none
+  auth: none
+}
+
+tests {
+  test("status is 401", function() {
+    expect(res.getStatus()).to.equal(401);
+  });
+}

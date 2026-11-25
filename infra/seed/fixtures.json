@@ -1,0 +1,439 @@
+{
+  "$comment": "Canonical EF Core seed: no SQL INSERT scripts. Balances are not FX-converted. Synthetic IBAN check digits intentionally invalid.",
+  "branches": [
+    {
+      "code": "STR",
+      "name": "Stuttgart"
+    },
+    {
+      "code": "MUC",
+      "name": "München"
+    }
+  ],
+  "customers": [
+    {
+      "id": "C-1002",
+      "branch": "STR",
+      "firstName": "Jana",
+      "lastName": "Weidner",
+      "email": "jana.weidner@example.test",
+      "phone": "+49 711 0000 1002",
+      "iban": "DE72100100100000001002",
+      "dateOfBirth": "1984-03-12",
+      "segment": "private"
+    },
+    {
+      "id": "C-1003",
+      "branch": "STR",
+      "firstName": "Oliver",
+      "lastName": "Brandt",
+      "email": "oliver.brandt@example.test",
+      "phone": "+49 711 0000 1003",
+      "iban": "DE45100100100000001003",
+      "dateOfBirth": "1979-11-02",
+      "segment": "private"
+    },
+    {
+      "id": "C-1004",
+      "branch": "STR",
+      "firstName": "Selin",
+      "lastName": "Aydın",
+      "email": "selin.aydin@example.test",
+      "phone": "+49 711 0000 1004",
+      "iban": "DE18100100100000001004",
+      "dateOfBirth": "1991-06-25",
+      "segment": "business"
+    },
+    {
+      "id": "C-5001",
+      "branch": "MUC",
+      "firstName": "Thomas",
+      "lastName": "Huber",
+      "email": "thomas.huber@example.test",
+      "phone": "+49 89 0000 5001",
+      "iban": "DE28700700700000005001",
+      "dateOfBirth": "1968-01-30",
+      "segment": "private",
+      "keycloakUsername": "thomas.customer"
+    },
+    {
+      "id": "C-5002",
+      "branch": "MUC",
+      "firstName": "Lisa",
+      "lastName": "Gruber",
+      "email": "lisa.gruber@example.test",
+      "phone": "+49 89 0000 5002",
+      "iban": "DE98700700700000005002",
+      "dateOfBirth": "1988-09-14",
+      "segment": "business"
+    },
+    {
+      "id": "C-2001",
+      "branch": "MUC",
+      "firstName": "Deniz",
+      "lastName": "Kaya",
+      "email": "deniz.kaya@example.test",
+      "phone": "+49 89 0000 2001",
+      "iban": "DE65100100100000002001",
+      "dateOfBirth": "1993-08-19",
+      "segment": "private",
+      "keycloakUsername": "deniz.customer"
+    },
+    {
+      "id": "C-2002",
+      "branch": "MUC",
+      "firstName": "Meryem",
+      "lastName": "Demir",
+      "email": "meryem.demir@example.test",
+      "phone": "+49 89 0000 2002",
+      "iban": "DE38100100100000002002",
+      "dateOfBirth": "1987-04-22",
+      "segment": "private",
+      "keycloakUsername": "meryem.customer"
+    },
+    {
+      "id": "C-2003",
+      "branch": "MUC",
+      "firstName": "Lucas",
+      "lastName": "Schneider",
+      "email": "lucas.schneider@example.test",
+      "phone": "+49 89 0000 2003",
+      "iban": "DE11100100100000002003",
+      "dateOfBirth": "1992-02-14",
+      "segment": "private",
+      "keycloakUsername": "lucas.customer"
+    },
+    {
+      "id": "C-5003",
+      "branch": "MUC",
+      "firstName": "Elif",
+      "lastName": "Yılmaz",
+      "email": "elif.yilmaz@example.test",
+      "phone": "+49 89 0000 5003",
+      "iban": "DE06100100100000005003",
+      "dateOfBirth": "1990-10-05",
+      "segment": "private",
+      "keycloakUsername": "elif.customer"
+    },
+    {
+      "id": "C-5004",
+      "branch": "MUC",
+      "firstName": "Emilia",
+      "lastName": "Fischer",
+      "email": "emilia.fischer@example.test",
+      "phone": "+49 89 0000 5004",
+      "iban": "DE76100100100000005004",
+      "dateOfBirth": "1985-07-13",
+      "segment": "private",
+      "keycloakUsername": "emilia.customer"
+    },
+    {
+      "id": "C-5005",
+      "branch": "MUC",
+      "firstName": "Martin",
+      "lastName": "Klein",
+      "email": "martin.klein@example.test",
+      "phone": "+49 89 0000 5005",
+      "iban": "DE49100100100000005005",
+      "dateOfBirth": "1981-12-12",
+      "segment": "private"
+    },
+    {
+      "id": "C-5006",
+      "branch": "MUC",
+      "firstName": "Derya",
+      "lastName": "Öztürk",
+      "email": "derya.özturk@example.test",
+      "phone": "+49 89 0000 5006",
+      "iban": "DE22100100100000005006",
+      "dateOfBirth": "1978-09-08",
+      "segment": "private"
+    }
+  ],
+  "accounts": [
+    {
+      "id": "A-10021",
+      "customerId": "C-1002",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 4210.55
+    },
+    {
+      "id": "A-10022",
+      "customerId": "C-1002",
+      "type": "savings",
+      "currency": "EUR",
+      "balance": 18300.0
+    },
+    {
+      "id": "A-10031",
+      "customerId": "C-1003",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 950.1
+    },
+    {
+      "id": "A-10041",
+      "customerId": "C-1004",
+      "type": "business",
+      "currency": "EUR",
+      "balance": 61200.0
+    },
+    {
+      "id": "A-50011",
+      "customerId": "C-5001",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 2780.4
+    },
+    {
+      "id": "A-50021",
+      "customerId": "C-5002",
+      "type": "business",
+      "currency": "EUR",
+      "balance": 33900.75
+    },
+    {
+      "id": "A-10023",
+      "customerId": "C-1002",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 1250.4
+    },
+    {
+      "id": "A-10024",
+      "customerId": "C-1002",
+      "type": "checking",
+      "currency": "TRY",
+      "balance": 94500.0
+    },
+    {
+      "id": "A-10032",
+      "customerId": "C-1003",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 375.8
+    },
+    {
+      "id": "A-10033",
+      "customerId": "C-1003",
+      "type": "savings",
+      "currency": "TRY",
+      "balance": 4500.0
+    },
+    {
+      "id": "A-20011",
+      "customerId": "C-2001",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 4350.25
+    },
+    {
+      "id": "A-20012",
+      "customerId": "C-2001",
+      "type": "savings",
+      "currency": "EUR",
+      "balance": 9800.0
+    },
+    {
+      "id": "A-20013",
+      "customerId": "C-2001",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 2700.0
+    },
+    {
+      "id": "A-20014",
+      "customerId": "C-2001",
+      "type": "checking",
+      "currency": "TRY",
+      "balance": 175000.0
+    },
+    {
+      "id": "A-20021",
+      "customerId": "C-2002",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 3220.2
+    },
+    {
+      "id": "A-20022",
+      "customerId": "C-2002",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 840.0
+    },
+    {
+      "id": "A-20023",
+      "customerId": "C-2002",
+      "type": "savings",
+      "currency": "TRY",
+      "balance": 32000.0
+    },
+    {
+      "id": "A-20031",
+      "customerId": "C-2003",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 950.1
+    },
+    {
+      "id": "A-20032",
+      "customerId": "C-2003",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 7100.0
+    },
+    {
+      "id": "A-20033",
+      "customerId": "C-2003",
+      "type": "savings",
+      "currency": "TRY",
+      "balance": 12400.0
+    },
+    {
+      "id": "A-50012",
+      "customerId": "C-5001",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 2180.0
+    },
+    {
+      "id": "A-50013",
+      "customerId": "C-5001",
+      "type": "savings",
+      "currency": "TRY",
+      "balance": 64000.0
+    },
+    {
+      "id": "A-50031",
+      "customerId": "C-5003",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 6700.0
+    },
+    {
+      "id": "A-50032",
+      "customerId": "C-5003",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 450.2
+    },
+    {
+      "id": "A-50033",
+      "customerId": "C-5003",
+      "type": "savings",
+      "currency": "TRY",
+      "balance": 54000.0
+    },
+    {
+      "id": "A-50041",
+      "customerId": "C-5004",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 18450.0
+    },
+    {
+      "id": "A-50042",
+      "customerId": "C-5004",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 2000.0
+    },
+    {
+      "id": "A-50043",
+      "customerId": "C-5004",
+      "type": "savings",
+      "currency": "TRY",
+      "balance": 153000.0
+    },
+    {
+      "id": "A-50051",
+      "customerId": "C-5005",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 1500.0
+    },
+    {
+      "id": "A-50052",
+      "customerId": "C-5005",
+      "type": "savings",
+      "currency": "USD",
+      "balance": 90.0
+    },
+    {
+      "id": "A-50061",
+      "customerId": "C-5006",
+      "type": "checking",
+      "currency": "EUR",
+      "balance": 450.5
+    },
+    {
+      "id": "A-50062",
+      "customerId": "C-5006",
+      "type": "savings",
+      "currency": "TRY",
+      "balance": 17500.0
+    }
+  ],
+  "creditApplications": [
+    {
+      "id": "K-100",
+      "customerId": "C-1002",
+      "amount": 35000.0,
+      "currency": "EUR",
+      "status": "SUBMITTED",
+      "purpose": "Renovation loan",
+      "preparedBy": "mehmet.kredit",
+      "assignedAnalyst": "mehmet.kredit",
+      "$comment": "Valid for max.approver: within limit, prepared by someone else."
+    },
+    {
+      "id": "K-101",
+      "customerId": "C-1002",
+      "amount": 80000.0,
+      "currency": "EUR",
+      "status": "SUBMITTED",
+      "purpose": "Property purchase top-up",
+      "preparedBy": "mehmet.kredit",
+      "assignedAnalyst": "mehmet.kredit",
+      "$comment": "Above the EUR 50,000 approval limit of max.approver."
+    },
+    {
+      "id": "K-102",
+      "customerId": "C-5002",
+      "amount": 20000.0,
+      "currency": "EUR",
+      "status": "SUBMITTED",
+      "purpose": "Equipment financing",
+      "preparedBy": "max.approver",
+      "assignedAnalyst": "mehmet.kredit",
+      "$comment": "Prepared by max.approver: four-eyes violation if he approves it. Also makes Munich customer C-5002 visible to mehmet.kredit."
+    },
+    {
+      "id": "K-200",
+      "customerId": "C-5001",
+      "amount": 12000.0,
+      "currency": "EUR",
+      "status": "DRAFT",
+      "purpose": "Car loan",
+      "preparedBy": "unassigned",
+      "assignedAnalyst": null,
+      "$comment": "Not assigned to any analyst; C-5001 must stay invisible to mehmet.kredit."
+    }
+  ],
+  "employees": [
+    {
+      "id": "E-100",
+      "username": "sophie.hr",
+      "department": "HR",
+      "salaryBand": "B4"
+    },
+    {
+      "id": "E-101",
+      "username": "mehmet.kredit",
+      "department": "Credit",
+      "salaryBand": "B3"
+    }
+  ]
+}

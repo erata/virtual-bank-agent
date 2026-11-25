@@ -1,0 +1,28 @@
+meta {
+  name: Token for max.approver
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{keycloakUrl}}/realms/{{realm}}/protocol/openid-connect/token
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  grant_type: password
+  client_id: {{cliClientId}}
+  username: max.approver
+  password: {{personaPassword}}
+}
+
+script:post-response {
+  bru.setVar("maxToken", res.body.access_token);
+}
+
+tests {
+  test("token issued", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+}

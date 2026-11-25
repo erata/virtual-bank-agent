@@ -1,0 +1,18 @@
+Yedekleme ve Kurtarma Tatbikatı 2026
+
+Kurtarma hedefi
+Bu kurgusal operasyon tatbikatında müşteri sistemleri için geri dönüş süresi hedefi RTO 60 dakika, kabul edilen veri kaybı hedefi RPO 15 dakika olarak belirlenmiştir.
+
+Yedekleme planı
+Gecelik tam yedek, saatlik işlem günlüğü arşivi ve aylık geri yükleme denemesi örnek süreç olarak tanımlanmıştır.
+
+Kurtarma denemesi
+Veritabanı geri yüklemesinde doğrulama hashleri, minimum yetkili hesaplar ve denetim izleri kontrol edilir. Yedekten dönmek işlemleri otomatik olarak onaylamaz.
+
+Yetki
+Bu belge yalnızca operations-operator rolü ve sınıf 2 erişim seviyesine açık tutulur. HR ve kredi analistleri için görünür değildir.
+
+Olay sonrası
+İyileştirme maddeleri olay numarasıyla takip edilir. Yapay zeka cevabı belgeyi özetleyebilir ama gerçek kurtarma komutu çalıştıramaz.
+
+All amounts and policies are fictional reference data.

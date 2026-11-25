@@ -1,0 +1,23 @@
+meta {
+  name: No token
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{apiBaseUrl}}/api/assistant/chat
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "message": "show customers"
+  }
+}
+
+tests {
+  test("status is 401", function() {
+    expect(res.getStatus()).to.equal(401);
+  });
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Accounts of a hidden customer answer 404
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers/C-5001/accounts
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{annaToken}}
+}
+
+tests {
+  test("status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

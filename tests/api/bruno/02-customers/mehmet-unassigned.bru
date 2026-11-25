@@ -1,0 +1,21 @@
+meta {
+  name: Mehmet cannot see unassigned customer C-5001
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers/C-5001
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{mehmetToken}}
+}
+
+tests {
+  test("status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

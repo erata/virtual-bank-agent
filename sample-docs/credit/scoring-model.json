@@ -1,0 +1,21 @@
+{
+  "title": "Credit Scoring Assessment Model",
+  "policy": "Scoring combines synthetic repayment history, income stability and document completeness. No model score automatically creates approval rights. Authorized analyst assignments remain the source for relationship-based customer access.",
+  "organization": "VirtualBank",
+  "synthetic": true,
+  "evaluationFactors": [
+    "Synthetic income stability helps explain why a credit analyst reviews a case; it does not automatically decide approval.",
+    "Repayment-history examples are synthetic and remain scoped to an assigned credit application.",
+    "Document completeness is a data-quality signal and must not override four-eyes or approval limits."
+  ],
+  "authorizedProcess": {
+    "analyst": "review assigned applications and cite approved policy sources",
+    "approver": "human approval with individual limit, status and four-eyes checks",
+    "assistant": "read-only use cases; no independent loan approval"
+  },
+  "testQuestions": [
+    "Which factors are considered by the example credit scoring process?",
+    "What does credit scoring NOT authorize?",
+    "Why does a score not replace approval authority?"
+  ]
+}

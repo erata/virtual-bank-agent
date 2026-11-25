@@ -1,0 +1,160 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  starter-unix:
+    name: Unix starter syntax (no model download)
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Bash starter and test scripts
+        run: |
+          bash -n scripts/unix/start-local.sh scripts/unix/verify-publication.sh scripts/ai-index.sh scripts/test/keycloak-claims.sh
+          bash scripts/unix/start-local.sh --help
+      - name: Validate fixture data and document ACL declarations
+        run: |
+          python3 tools/publication_guard.py
+          python3 tools/evaluate_rag.py --dry-run
+
+  starter-windows:
+    name: Windows PowerShell launcher parse (no model download)
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PowerShell syntax
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem scripts/windows -Filter '*.ps1' -File
+          foreach ($entry in $files) {
+            $file = $entry.FullName
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file).Path, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) { throw "PowerShell parse failed in $file : $errors" }
+          }
+  unit:
+    name: Build, seed check and unit tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Repository publication and fixture preflight (no external services)
+        run: python3 tools/publication_guard.py
+      - run: dotnet restore VirtualBank.slnx
+      - run: dotnet run --project tools/VirtualBank.SeedGenerator -- --check
+      - run: dotnet build VirtualBank.slnx --no-restore -c Release
+      # Catch schema drift by comparing each FROZEN snapshot with the live EF model.
+      # Requires the real provider and .NET SDK; a Python/static check is not sufficient.
+      - name: Install EF Core CLI
+        run: dotnet tool install --global dotnet-ef --version 10.0.4
+      - name: Validate Code First model snapshots
+        run: |
+          for context in CustomerDbContext CreditDbContext DocumentsDbContext; do
+            dotnet ef migrations has-pending-model-changes \
+              --context "$context" \
+              --project src/VirtualBank.Infrastructure \
+              --startup-project src/VirtualBank.Infrastructure \
+              --configuration Release --no-build
+            dotnet ef migrations script --idempotent \
+              --context "$context" \
+              --project src/VirtualBank.Infrastructure \
+              --startup-project src/VirtualBank.Infrastructure \
+              --configuration Release --no-build \
+              --output "/tmp/virtualbank-${context}-migrations.sql"
+            test -s "/tmp/virtualbank-${context}-migrations.sql"
+          done
+      - run: >
+          dotnet test VirtualBank.slnx --no-build -c Release
+          --logger trx --collect:"XPlat Code Coverage" --results-directory TestResults
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-test-results
+          path: TestResults
+
+  frontend:
+    name: Web UI unit tests, layer rules and production build
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: src/Frontend/virtual-bank-ui
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/Frontend/virtual-bank-ui/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npx prettier --check "src/**/*.{ts,css}" "e2e/**/*.ts"
+      - run: npm test
+      - run: npm run test:architecture
+      - run: npx ng build
+
+  database:
+    name: PostgreSQL RLS suite (ephemeral cluster)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: ASSISTANT_PROVIDER=Offline DOCUMENTS_EMBEDDING_PROVIDER=Ollama DOCUMENTS_EMBEDDING_MODEL=bge-m3 DOCUMENTS_EMBEDDING_ENDPOINT=http://ollama:11434/ docker compose up -d --build --wait postgres
+      - name: Apply migrations and seed (foreground, fails the job on a non-zero exit)
+        run: docker compose run --rm db-migrate
+      - run: PGHOST=localhost PGPORT=5432 PGUSER=postgres PGPASSWORD=postgres-dev-only scripts/test/db-tests.sh
+
+  compose:
+    name: Compose stack, Keycloak claims, smoke, Bruno API and browser tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: ASSISTANT_PROVIDER=Offline DOCUMENTS_EMBEDDING_PROVIDER=Ollama DOCUMENTS_EMBEDDING_MODEL=bge-m3 DOCUMENTS_EMBEDDING_ENDPOINT=http://ollama:11434/ docker compose up -d --build --wait
+      - name: RLS suite against the Compose database
+        run: PGHOST=localhost PGPORT=5432 PGUSER=postgres PGPASSWORD=postgres-dev-only scripts/test/db-tests.sh
+      - name: Keycloak issues the expected claims
+        run: scripts/test/keycloak-claims.sh
+      - name: Smoke checks
+        run: scripts/test/api-smoke.sh
+      - name: Prepare Bruno report directory
+        run: mkdir -p TestResults
+      - name: Bruno API collection
+        working-directory: tests/api/bruno
+        run: npx --yes @usebruno/cli@4.3.0 run --env local --reporter-junit ../../../TestResults/bruno.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bruno-results
+          path: TestResults/bruno.xml
+          if-no-files-found: ignore
+      - name: Browser tests (real Keycloak login, UI through nginx, real APIs)
+        working-directory: src/Frontend/virtual-bank-ui
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          npm run e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: src/Frontend/virtual-bank-ui/test-results
+          if-no-files-found: ignore
+      - if: failure()
+        run: docker compose logs --no-color > compose.log
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: compose-logs
+          path: compose.log

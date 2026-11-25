@@ -1,0 +1,38 @@
+# .NET and IDE
+bin/
+obj/
+*.user
+.vs/
+.idea/
+.vscode/settings.json
+# Local credentials (examples without real keys are intentionally tracked)
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.pem
+*.key
+secrets/
+# Databases, backups, diagnostics
+backups/
+*.bak
+*.dump
+*.sql.gz
+*.log
+TestResults/
+coverage/
+# Frontend and browser artifacts
+node_modules/
+dist/
+.angular/
+playwright-report/
+test-results/
+# OS and Python
+.DS_Store
+__pycache__/
+.pytest_cache/
+# Local AI-assistant/editor session state
+.claude/
+# Technical articles are published separately (diagrams used by the docs live in docs/assets)
+articles/

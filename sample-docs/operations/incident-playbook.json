@@ -1,0 +1,30 @@
+{
+  "title": "Wiederherstellung nach Betriebsstörungen",
+  "policy": "Kritische Betriebsstörungen erfordern dokumentierte Maßnahmen. Fehler in Identity-Providern, PostgreSQL und dem Einbettungsdienst werden separat behandelt. Ein fehlgeschlagener Embedding-Dienst darf niemals durch ungeschützte Dokumentenabfragen ersetzt werden.",
+  "organization": "VirtualBank",
+  "synthetic": true,
+  "recoverySequence": [
+    {
+      "step": "klassifizieren",
+      "detail": "Feststellen, ob Keycloak-Authentifizierung, Kunden-DB, Kredit-DB, Dokumenten-DB oder der Embedding-Anbieter betroffen ist"
+    },
+    {
+      "step": "eindämmen",
+      "detail": "Keine Access-Tokens veröffentlichen und keine persistenten Volumes ohne freigegebenes Backup löschen"
+    },
+    {
+      "step": "untersuchen",
+      "detail": "Dienststatus und bereinigte Logs mit Korrelations-IDs prüfen"
+    },
+    {
+      "step": "wiederherstellen",
+      "detail": "Nur den betroffenen Dienst neu starten und danach Autorisierung und Datenzugriff prüfen"
+    }
+  ],
+  "securityBoundary": "Betriebsmitarbeitende dürfen Runbooks lesen, aber keine Kundensalden, Kreditentscheidungen oder HR-Gehaltsdokumente.",
+  "testQuestions": [
+    "Wie untersucht man eine Keycloak-Störung?",
+    "Welcher Dienst ist bei einem ausgefallenen Embedding-Anbieter betroffen?",
+    "Warum darf ein PostgreSQL-Volume nicht direkt gelöscht werden?"
+  ]
+}

@@ -1,0 +1,18 @@
+Card Disputes Customer FAQ 2026
+
+Customer dispute
+A card dispute is a request to review a card transaction. The public FAQ distinguishes card disputes from a scheduled SEPA transfer or standing order.
+
+What to collect
+The customer may collect the transaction date, merchant name and amount. Do not enter card PIN, CVV or passwords into the virtual assistant.
+
+Chargeback limitations
+This demo has no real chargeback submission tool. The assistant may explain common terms but must not claim that a case has been submitted.
+
+Security advice
+If an unauthorized transaction is suspected, contact the official bank service channel. A public document is not evidence that a transfer actually happened.
+
+Language
+The terms chargeback, Kartenreklamation and kart harcaması itirazı may refer to related support topics; actual legal timelines are not specified in this sample.
+
+All amounts and policies are fictional reference data.

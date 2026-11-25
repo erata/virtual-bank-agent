@@ -1,0 +1,42 @@
+meta {
+  name: Advisor: partial answer with a deterministic notice
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{apiBaseUrl}}/api/assistant/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{annaToken}}
+}
+
+body:json {
+  {
+    "message": "show my customers and credit applications"
+  }
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("credit part denied by application code, customers answered", function() {
+    const body = res.getBody();
+    expect(body.partial).to.equal(true);
+    expect(body.notices).to.deep.equal(["CREDIT_READ_REQUIRED"]);
+    const tools = body.toolCalls.map((c) => c.tool + ":" + c.status);
+    expect(tools).to.include("list_customers:SUCCEEDED");
+    expect(tools).to.include("list_credit_applications:DENIED");
+  });
+  test("only own-branch customers reach the answer", function() {
+    // Customer rows are returned as a structured table, not inside the answer text.
+    const ids = res.getBody().tables.flatMap((t) => t.rows.map((r) => r[0]));
+    expect(ids).to.include("C-1002");
+    expect(ids).to.not.include("C-5001");
+    expect(JSON.stringify(res.getBody())).to.not.contain("C-5001");
+  });
+}

@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Generates deterministic PostgreSQL seed scripts from infra/seed/fixtures.json.
+       Usage: see Program.cs header. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+</Project>

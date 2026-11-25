@@ -1,0 +1,586 @@
+{
+  "description": "40+ human-authored TR/DE/EN live retrieval probes: ACL, public customer FAQ, cross-lingual queries, and 2023/2024 archived vs 2026 current near-duplicate policies. Dry-run only validates fixtures; measured results require real inference.",
+  "topK": 5,
+  "cases": [
+    {
+      "id": "TR-credit-exception",
+      "persona": "mehmet.kredit",
+      "language": "tr",
+      "query": "Kredi istisna yönetimi ve kredi politikası",
+      "expectedAny": [
+        "DOC-108",
+        "DOC-105"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-114",
+        "DOC-109"
+      ]
+    },
+    {
+      "id": "DE-credit-approval",
+      "persona": "mehmet.kredit",
+      "language": "de",
+      "query": "Kreditfreigabe Richtlinie und Ausnahmeverfahren",
+      "expectedAny": [
+        "DOC-105",
+        "DOC-108"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-114",
+        "DOC-109"
+      ]
+    },
+    {
+      "id": "EN-credit-score",
+      "persona": "mehmet.kredit",
+      "language": "en",
+      "query": "Credit scoring assessment model",
+      "expectedAny": [
+        "DOC-113"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-114",
+        "DOC-109"
+      ]
+    },
+    {
+      "id": "TR-hr-salary",
+      "persona": "sophie.hr",
+      "language": "tr",
+      "query": "İnsan kaynakları maaş bantları",
+      "expectedAny": [
+        "DOC-106"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-108",
+        "DOC-113"
+      ]
+    },
+    {
+      "id": "EN-hr-grade",
+      "persona": "sophie.hr",
+      "language": "en",
+      "query": "Human resources job grades and salary levels",
+      "expectedAny": [
+        "DOC-114",
+        "DOC-106"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-113"
+      ]
+    },
+    {
+      "id": "DE-hr-crosslingual",
+      "persona": "sophie.hr",
+      "language": "de",
+      "query": "Personalabteilung Gehaltsbänder und Karrierestufen",
+      "expectedAny": [
+        "DOC-106",
+        "DOC-114"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-113"
+      ]
+    },
+    {
+      "id": "EN-ops-incident",
+      "persona": "oliver.ops",
+      "language": "en",
+      "query": "IT operations incident runbook",
+      "expectedAny": [
+        "DOC-109"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-105"
+      ]
+    },
+    {
+      "id": "DE-ops-recovery",
+      "persona": "oliver.ops",
+      "language": "de",
+      "query": "Betriebsstörung Wiederherstellung Incident Playbook",
+      "expectedAny": [
+        "DOC-115",
+        "DOC-109"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-105"
+      ]
+    },
+    {
+      "id": "TR-ops-crosslingual",
+      "persona": "oliver.ops",
+      "language": "tr",
+      "query": "Operasyon hatası kurtarma ve olay müdahalesi",
+      "expectedAny": [
+        "DOC-109",
+        "DOC-115"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-114"
+      ]
+    },
+    {
+      "id": "EN-advisor-accounts",
+      "persona": "anna.berater",
+      "language": "en",
+      "query": "VirtualBank account products and conditions",
+      "expectedAny": [
+        "DOC-101",
+        "DOC-103"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106",
+        "DOC-114"
+      ]
+    },
+    {
+      "id": "TR-advisor-security",
+      "persona": "anna.berater",
+      "language": "tr",
+      "query": "Yetki sınırları, bilgi güvenliği ve erişim",
+      "expectedAny": [
+        "DOC-107",
+        "DOC-111"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106",
+        "DOC-114"
+      ]
+    },
+    {
+      "id": "DE-advisor-onboarding",
+      "persona": "anna.berater",
+      "language": "de",
+      "query": "Interne Einarbeitung für neue Kundenberater in Stuttgart",
+      "expectedAny": [
+        "DOC-104"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106",
+        "DOC-114"
+      ]
+    },
+    {
+      "id": "EN-advisor-cannot-read-HR",
+      "persona": "anna.berater",
+      "language": "en",
+      "query": "HR salary bands restricted",
+      "expectedAny": [],
+      "forbidden": [
+        "DOC-106",
+        "DOC-114",
+        "DOC-105"
+      ]
+    },
+    {
+      "id": "TR-analyst-cannot-read-HR",
+      "persona": "mehmet.kredit",
+      "language": "tr",
+      "query": "İnsan kaynaklarının gizli maaşları",
+      "expectedAny": [],
+      "forbidden": [
+        "DOC-106",
+        "DOC-114"
+      ]
+    },
+    {
+      "id": "TR-deniz-fees-2026",
+      "persona": "deniz.customer",
+      "language": "tr",
+      "query": "2026 güncel hesap işletim ücreti ve anlık SEPA havale masrafı ne kadar?",
+      "expectedAny": [
+        "DOC-117",
+        "DOC-130"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106",
+        "DOC-123"
+      ],
+      "targetVersion": "current"
+    },
+    {
+      "id": "EN-deniz-fees-2024",
+      "persona": "deniz.customer",
+      "language": "en",
+      "query": "What was the monthly account fee in the archived 2024 schedule?",
+      "expectedAny": [
+        "DOC-116"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106"
+      ],
+      "targetVersion": "archived"
+    },
+    {
+      "id": "DE-deniz-fees-2026",
+      "persona": "deniz.customer",
+      "language": "de",
+      "query": "Was kosten Kontoführung und Instant-SEPA nach der aktuellen Preisliste 2026?",
+      "expectedAny": [
+        "DOC-117",
+        "DOC-130"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106"
+      ],
+      "targetVersion": "current"
+    },
+    {
+      "id": "TR-deniz-sepa",
+      "persona": "deniz.customer",
+      "language": "tr",
+      "query": "SEPA havalesi ve otomatik ödeme talimatları nasıl çalışır?",
+      "expectedAny": [
+        "DOC-118",
+        "DOC-119"
+      ],
+      "forbidden": [
+        "DOC-104",
+        "DOC-105",
+        "DOC-106"
+      ]
+    },
+    {
+      "id": "DE-thomas-dauerauftrag",
+      "persona": "thomas.customer",
+      "language": "de",
+      "query": "Was ist ein Dauerauftrag und wie unterscheidet er sich von einer SEPA-Überweisung?",
+      "expectedAny": [
+        "DOC-119"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106"
+      ]
+    },
+    {
+      "id": "EN-thomas-card-dispute",
+      "persona": "thomas.customer",
+      "language": "en",
+      "query": "How do I dispute a card transaction and what is a chargeback?",
+      "expectedAny": [
+        "DOC-129"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106"
+      ]
+    },
+    {
+      "id": "TR-meryem-accessibility",
+      "persona": "meryem.customer",
+      "language": "tr",
+      "query": "Erişilebilir dijital bankacılık desteği ve şifre yardım seçenekleri nelerdir?",
+      "expectedAny": [
+        "DOC-120"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106"
+      ]
+    },
+    {
+      "id": "DE-emilia-public-pricing",
+      "persona": "emilia.customer",
+      "language": "de",
+      "query": "Aktuelle Gebühren FAQ für Überweisungen und Konto 2026",
+      "expectedAny": [
+        "DOC-130",
+        "DOC-117"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106"
+      ]
+    },
+    {
+      "id": "EN-anna-current-fees",
+      "persona": "anna.berater",
+      "language": "en",
+      "query": "Current retail account fee in 2026 versus old 2024 fee?",
+      "expectedAny": [
+        "DOC-117",
+        "DOC-116"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-123"
+      ],
+      "targetVersion": "current"
+    },
+    {
+      "id": "DE-anna-branch-2026",
+      "persona": "anna.berater",
+      "language": "de",
+      "query": "Stuttgarter Filialleitfaden 2026: Kundenberatung und RLS",
+      "expectedAny": [
+        "DOC-121",
+        "DOC-104"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106"
+      ]
+    },
+    {
+      "id": "TR-anna-public-sepa",
+      "persona": "anna.berater",
+      "language": "tr",
+      "query": "SEPA havale ve iban kontrolü için Türkçe müşteri rehberi",
+      "expectedAny": [
+        "DOC-118"
+      ],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106"
+      ]
+    },
+    {
+      "id": "EN-mehmet-2023-policy",
+      "persona": "mehmet.kredit",
+      "language": "en",
+      "query": "Historical 2023 archived approval threshold and second reviewer amount",
+      "expectedAny": [
+        "DOC-122"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-109"
+      ],
+      "targetVersion": "archived"
+    },
+    {
+      "id": "DE-mehmet-2026-policy",
+      "persona": "mehmet.kredit",
+      "language": "de",
+      "query": "Aktuelle Kreditfreigaberichtlinie 2026 Vier-Augen-Prinzip ab 50.000 EUR",
+      "expectedAny": [
+        "DOC-123"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-109"
+      ],
+      "targetVersion": "current"
+    },
+    {
+      "id": "TR-mehmet-2026-exception",
+      "persona": "mehmet.kredit",
+      "language": "tr",
+      "query": "2026 kredi istisna akışında gerekçe kayıtları ve dört göz kontrolü",
+      "expectedAny": [
+        "DOC-124"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-109"
+      ]
+    },
+    {
+      "id": "EN-mehmet-collateral",
+      "persona": "mehmet.kredit",
+      "language": "en",
+      "query": "Secured lending 2026 collateral valuation and 70 percent loan-to-value",
+      "expectedAny": [
+        "DOC-125"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-109"
+      ]
+    },
+    {
+      "id": "DE-mehmet-2023-archive",
+      "persona": "mehmet.kredit",
+      "language": "de",
+      "query": "Was war die frühere Kreditgenehmigungsschwelle aus 2023?",
+      "expectedAny": [
+        "DOC-122"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-109"
+      ],
+      "targetVersion": "archived"
+    },
+    {
+      "id": "TR-mehmet-2026-freigabe",
+      "persona": "mehmet.kredit",
+      "language": "tr",
+      "query": "2026 kredi onay limiti ve ikinci bağımsız gözün rolü",
+      "expectedAny": [
+        "DOC-123"
+      ],
+      "forbidden": [
+        "DOC-106",
+        "DOC-109"
+      ],
+      "targetVersion": "current"
+    },
+    {
+      "id": "EN-sophie-compensation",
+      "persona": "sophie.hr",
+      "language": "en",
+      "query": "2026 compensation review cycle and salary bands staff levels",
+      "expectedAny": [
+        "DOC-126",
+        "DOC-106"
+      ],
+      "forbidden": [
+        "DOC-123",
+        "DOC-125"
+      ]
+    },
+    {
+      "id": "DE-sophie-compensation-crosslingual",
+      "persona": "sophie.hr",
+      "language": "de",
+      "query": "Gehaltsprüfung im Jahr 2026: Gehaltsbänder, zweiter Prüfer",
+      "expectedAny": [
+        "DOC-126",
+        "DOC-114"
+      ],
+      "forbidden": [
+        "DOC-123",
+        "DOC-125"
+      ]
+    },
+    {
+      "id": "TR-sophie-compensation",
+      "persona": "sophie.hr",
+      "language": "tr",
+      "query": "2026 maaş değerlendirme takvimi, ücret bantları ve gözden geçirme",
+      "expectedAny": [
+        "DOC-126",
+        "DOC-106"
+      ],
+      "forbidden": [
+        "DOC-123",
+        "DOC-125"
+      ]
+    },
+    {
+      "id": "DE-oliver-severity",
+      "persona": "oliver.ops",
+      "language": "de",
+      "query": "Incident Severity SEV1 SEV2 Wiederanlaufzeit RTO 60 Minuten",
+      "expectedAny": [
+        "DOC-127"
+      ],
+      "forbidden": [
+        "DOC-123",
+        "DOC-126"
+      ]
+    },
+    {
+      "id": "TR-oliver-backup",
+      "persona": "oliver.ops",
+      "language": "tr",
+      "query": "Yedekleme planı RPO 15 dakika kurtarma tatbikatı",
+      "expectedAny": [
+        "DOC-128"
+      ],
+      "forbidden": [
+        "DOC-123",
+        "DOC-126"
+      ]
+    },
+    {
+      "id": "EN-oliver-backup-crosslingual",
+      "persona": "oliver.ops",
+      "language": "en",
+      "query": "Backup recovery RPO fifteen minutes monthly restore test",
+      "expectedAny": [
+        "DOC-128"
+      ],
+      "forbidden": [
+        "DOC-123",
+        "DOC-126"
+      ]
+    },
+    {
+      "id": "TR-deniz-forbidden-credit",
+      "persona": "deniz.customer",
+      "language": "tr",
+      "query": "Gizli kredi istisna onayı, maaş bantları ve 2026 kredi limitleri",
+      "expectedAny": [],
+      "forbidden": [
+        "DOC-105",
+        "DOC-106",
+        "DOC-108",
+        "DOC-114",
+        "DOC-123",
+        "DOC-124"
+      ]
+    },
+    {
+      "id": "DE-thomas-forbidden-staff",
+      "persona": "thomas.customer",
+      "language": "de",
+      "query": "Interne Mitarbeiterschulung Stuttgart und geheime Gehaltsbänder",
+      "expectedAny": [],
+      "forbidden": [
+        "DOC-104",
+        "DOC-106",
+        "DOC-114",
+        "DOC-121",
+        "DOC-126"
+      ]
+    },
+    {
+      "id": "EN-anna-forbidden-ops",
+      "persona": "anna.berater",
+      "language": "en",
+      "query": "Operations incident severity matrix SEV1 and confidential recovery runbook",
+      "expectedAny": [],
+      "forbidden": [
+        "DOC-109",
+        "DOC-115",
+        "DOC-127",
+        "DOC-128"
+      ]
+    },
+    {
+      "id": "DE-mehmet-forbidden-HR",
+      "persona": "mehmet.kredit",
+      "language": "de",
+      "query": "Personalabteilung Gehaltsbänder compensation review March 2026",
+      "expectedAny": [],
+      "forbidden": [
+        "DOC-106",
+        "DOC-114",
+        "DOC-126"
+      ]
+    },
+    {
+      "id": "EN-lena-forbidden-public",
+      "persona": "lena.admin",
+      "language": "en",
+      "query": "What are the public 2026 fees and account products?",
+      "expectedAny": [],
+      "forbidden": [
+        "DOC-101",
+        "DOC-103",
+        "DOC-117",
+        "DOC-130"
+      ],
+      "expectedStatus": 403
+    }
+  ]
+}

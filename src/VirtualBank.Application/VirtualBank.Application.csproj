@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Use cases (CQRS queries and commands per module: Customers, Credit), ports to infrastructure and the
+       authorization engine with the modules' policies. Depends only on Model: no ASP.NET, no database
+       driver, no DI framework. Enforced by tests/architecture. -->
+  <PropertyGroup>
+    <RootNamespace>VirtualBank.Application</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../VirtualBank.Model/VirtualBank.Model.csproj" />
+  </ItemGroup>
+</Project>

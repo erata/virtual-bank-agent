@@ -1,0 +1,12 @@
+digraph G {
+  graph [fontname="DejaVu Sans",rankdir=LR,bgcolor="white",pad=.25,nodesep=.35,ranksep=.5,label="Permission-aware Tool Calling: defense in depth",labelloc=t,fontsize=18,fontcolor="#19324A"];
+  node [shape=box,style="rounded,filled",fontname="DejaVu Sans",fontsize=11,color="#D5E0E8",fillcolor="#F7FAFC",fontcolor="#19324A"];
+  edge [arrowsize=.65,color="#69869B"];
+  JWT [label="Validated JWT\nprincipal + claims"];
+  LLM [label="LLM requests\ntool call", fillcolor="#EFEAFF"];
+  Gate [label="ToolPolicyGate\nallowlist + risk + rate", fillcolor="#FFF2DD"];
+  Handler [label="Application use case\nresource policy", fillcolor="#E6F7EF"];
+  DB [label="PostgreSQL\nFORCE RLS",fillcolor="#E6F7EF"];
+  Answer [label="Structured result\n+ safe notices"];
+  JWT -> Gate; LLM -> Gate; Gate -> Handler; Handler -> DB; DB -> Answer;
+}

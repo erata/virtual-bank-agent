@@ -1,0 +1,27 @@
+meta {
+  name: Approval endpoint is not exposed before human confirmation (M6)
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{apiBaseUrl}}/api/credit/applications/K-100/approve
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{maxToken}}
+}
+
+body:json {
+  {
+    "confirm": true
+  }
+}
+
+tests {
+  test("status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Mehmet lists only customers of his assigned applications
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{mehmetToken}}
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("visible customers are exactly the expected set", function() {
+    expect(res.getBody().map(c => c.id)).to.deep.equal(["C-1002", "C-5002"]);
+  });
+}

@@ -1,0 +1,12 @@
+digraph G {
+  graph [fontname="DejaVu Sans",rankdir=LR,bgcolor="white",pad=.25,nodesep=.35,ranksep=.5,label="EF Core Code First + PostgreSQL native security",labelloc=t,fontsize=18,fontcolor="#19324A"];
+  node [shape=box,style="rounded,filled",fontname="DejaVu Sans",fontsize=11,color="#D5E0E8",fillcolor="#F7FAFC",fontcolor="#19324A"];
+  edge [arrowsize=.7,color="#69869B"];
+  Entity [label="Persistence entities\n+ Fluent API",fillcolor="#E6F7EF"];
+  Snapshot [label="Frozen model snapshot\nfor schema diff",fillcolor="#EFF3FD"];
+  Migration [label="Versioned EF migrations\nPK / FK / CHECK / index"];
+  RLS [label="Migration SQL\nFORCE RLS / GRANT",fillcolor="#FFF2DD"];
+  Migrator [label="One-shot migrator\nowner identity"];
+  DB [label="PostgreSQL\nleast-privilege API role"];
+  Entity -> Migration; Snapshot -> Migration; Migration -> Migrator; RLS -> Migrator; Migrator -> DB;
+}

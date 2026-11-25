@@ -1,0 +1,15 @@
+# VirtualBank Public FAQ
+
+Customers may ask about opening hours, banking products and branch locations. A public policy question may be answered using authorized public material. Structured customer details must be queried through authenticated tools, not inferred from the FAQ.
+
+## Who can see my balance?
+A bank customer may see their own accounts only after authentication and ownership verification. An advisor can see accounts in their authorized customer scope. A public FAQ never contains a live balance or a customer-specific IBAN.
+
+## Can I use the assistant in Turkish or German?
+VirtualBank is a multilingual engineering demonstration. The real chat-model mode may interpret questions in English, German or Turkish and request registered tools. The limited Offline mode uses deterministic matching for tests and should not be presented as general language understanding.
+
+## How does the bank distinguish scheduled payments from past transactions?
+Scheduled future payments have a due date, while booked transactions have a historical booking date. A query such as 'the next five days' must not return transactions from the previous five days. Automatic standing orders are a separate category and must not be confused with every scheduled payment.
+
+## Can the assistant approve a loan or transfer money?
+Not in this reference release. A model request alone does not authorize a write. Real-world payments and approvals require explicit human confirmation, fresh authorization, idempotency and auditable operations. No demo fixture should be interpreted as a production banking promise.

@@ -1,0 +1,26 @@
+meta {
+  name: Anna reads accounts of C-1002 including balances
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers/C-1002/accounts
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{annaToken}}
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("all four multi-currency accounts with balances", function() {
+    expect(res.getBody().map(a => a.id)).to.deep.equal(["A-10021", "A-10022", "A-10023", "A-10024"]);
+    expect(res.getBody().map(a => a.currency)).to.deep.equal(["EUR", "EUR", "USD", "TRY"]);
+    expect(res.getBody()[0].balance).to.equal(4210.55);
+  });
+}

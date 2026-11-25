@@ -1,0 +1,133 @@
+# Executable authorization specification.
+#
+# This file is the independently reviewed source of expected authorization outcomes.
+# Tests read it; it is never generated from the implementation. Changing an expected
+# outcome is a specification change and must be justified in the pull request (and an ADR
+# where semantics change).
+#
+# principal: Keycloak username from infra/keycloak/realm-virtual-bank.json
+# resource:  <resource type>:<id>; customers and credit applications resolve their attributes
+#            from infra/seed/fixtures.json, other types are capability resources
+# action:    canonical permission ID of the attempted operation
+# expected:  allow | deny
+# reason:    expected internal reason code (optional, checked when present)
+# status:    active (default) | planned. A planned case specifies a module that does not exist yet
+#            (module, target milestone). It is checked against the design policy and must be denied
+#            with NO_POLICY by every running service until the module ships; then it becomes active.
+
+version: 1
+milestone: M2
+
+cases:
+  # --- Customers: branch path (customer.read) ----------------------------------------------
+  - { id: CUSTOMER_SAME_BRANCH,            principal: anna.berater,   resource: "customer:C-1002", action: customer.read, expected: allow, invariants: [I22] }
+  - { id: CUSTOMER_SAME_BRANCH_BUSINESS,   principal: anna.berater,   resource: "customer:C-1004", action: customer.read, expected: allow }
+  - { id: CUSTOMER_OTHER_BRANCH,           principal: anna.berater,   resource: "customer:C-5001", action: customer.read, expected: deny, reason: BRANCH_MISMATCH }
+  - { id: ADVISOR_SENSITIVE_FIELDS_DENY,   principal: anna.berater,   resource: "customer:C-1002", action: customer.read-sensitive, expected: deny, reason: MISSING_PERMISSION }
+
+  # --- Customers: assignment path (customer.read.assigned) ----------------------------------
+  - { id: ANALYST_ASSIGNED_CUSTOMER,       principal: mehmet.kredit,  resource: "customer:C-1002", action: customer.read, expected: allow, invariants: [I22] }
+  - { id: ANALYST_ASSIGNED_OTHER_BRANCH,   principal: mehmet.kredit,  resource: "customer:C-5002", action: customer.read, expected: allow, invariants: [I22] }
+  - { id: ANALYST_UNASSIGNED_CUSTOMER,     principal: mehmet.kredit,  resource: "customer:C-5001", action: customer.read, expected: deny, reason: RESOURCE_NOT_ASSIGNED, invariants: [I22] }
+  - { id: ANALYST_UNASSIGNED_SAME_BRANCH,  principal: mehmet.kredit,  resource: "customer:C-1003", action: customer.read, expected: deny, reason: RESOURCE_NOT_ASSIGNED, invariants: [I22] }
+  - { id: ANALYST_SENSITIVE_FIELDS_DENY,   principal: mehmet.kredit,  resource: "customer:C-1002", action: customer.read-sensitive, expected: deny, reason: MISSING_PERMISSION }
+
+  # --- Customers: everyone else -------------------------------------------------------------
+  - { id: APPROVER_NO_CUSTOMER_ACCESS,     principal: max.approver,   resource: "customer:C-1002", action: customer.read, expected: deny, reason: MISSING_PERMISSION }
+  - { id: ADMIN_NO_CUSTOMER_ACCESS,        principal: lena.admin,     resource: "customer:C-1002", action: customer.read, expected: deny, reason: MISSING_PERMISSION, invariants: [I8] }
+  - { id: SECURITY_ADMIN_NO_CUSTOMER,      principal: sarah.security, resource: "customer:C-1002", action: customer.read, expected: deny, invariants: [I8] }
+  - { id: AUDITOR_NO_CUSTOMER_ACCESS,      principal: tom.auditor,    resource: "customer:C-1002", action: customer.read, expected: deny, invariants: [I8] }
+  - { id: HR_NO_CUSTOMER_ACCESS,           principal: sophie.hr,      resource: "customer:C-1002", action: customer.read, expected: deny }
+  - { id: REPORTING_SERVICE_NO_CUSTOMER,   principal: service-account-svc-reporting, resource: "customer:C-1002", action: customer.read, expected: deny, invariants: [I20] }
+
+  # --- Credit applications: read and notes ----------------------------------------------------
+  - { id: ANALYST_READ_ASSIGNED,           principal: mehmet.kredit,  resource: "credit.application:K-100", action: credit.read, expected: allow }
+  - { id: ANALYST_READ_UNASSIGNED,         principal: mehmet.kredit,  resource: "credit.application:K-200", action: credit.read, expected: deny, reason: RESOURCE_NOT_ASSIGNED }
+  - { id: ADVISOR_CREDIT_READ_DENY,        principal: anna.berater,   resource: "credit.application:K-100", action: credit.read, expected: deny, reason: MISSING_PERMISSION }
+  - { id: APPROVER_READ_SUBMITTED,         principal: max.approver,   resource: "credit.application:K-101", action: credit.read, expected: allow }
+  - { id: APPROVER_READ_DRAFT_DENY,        principal: max.approver,   resource: "credit.application:K-200", action: credit.read, expected: deny, reason: RESOURCE_NOT_ASSIGNED }
+  - { id: ADMIN_CREDIT_READ_DENY,          principal: lena.admin,     resource: "credit.application:K-100", action: credit.read, expected: deny, reason: MISSING_PERMISSION, invariants: [I8] }
+  - { id: ANALYST_NOTE_ASSIGNED,           principal: mehmet.kredit,  resource: "credit.application:K-100", action: credit.note.write, expected: allow }
+  - { id: APPROVER_NOTE_DENY,              principal: max.approver,   resource: "credit.application:K-100", action: credit.note.write, expected: deny, reason: MISSING_PERMISSION }
+
+  # --- Credit applications: approval (human confirmation is enforced separately, M6) ----------
+  - { id: CREDIT_APPROVAL_WITHIN_LIMIT,    principal: max.approver,   resource: "credit.application:K-100", action: credit.approve, expected: allow }
+  - { id: CREDIT_APPROVAL_OVER_LIMIT,      principal: max.approver,   resource: "credit.application:K-101", action: credit.approve, expected: deny, reason: APPROVAL_LIMIT_EXCEEDED }
+  - { id: CREDIT_FOUR_EYES,                principal: max.approver,   resource: "credit.application:K-102", action: credit.approve, expected: deny, reason: FOUR_EYES_VIOLATION }
+  - { id: CREDIT_APPROVE_DRAFT,            principal: max.approver,   resource: "credit.application:K-200", action: credit.approve, expected: deny, reason: INVALID_RESOURCE_STATE }
+  - { id: ANALYST_CANNOT_APPROVE,          principal: mehmet.kredit,  resource: "credit.application:K-100", action: credit.approve, expected: deny, reason: MISSING_PERMISSION }
+  - { id: ADMIN_CANNOT_APPROVE,            principal: lena.admin,     resource: "credit.application:K-100", action: credit.approve, expected: deny, reason: MISSING_PERMISSION, invariants: [I8] }
+
+  # --- Assistant (M2): capability gate; every tool then re-uses the use-case policies above ----------
+  - { id: ADVISOR_ASSISTANT_USE,           principal: anna.berater,   resource: "assistant:chat", action: assistant.use, expected: allow, invariants: [I1] }
+  - { id: ANALYST_ASSISTANT_USE,           principal: mehmet.kredit,  resource: "assistant:chat", action: assistant.use, expected: allow, invariants: [I1] }
+  - { id: APPROVER_ASSISTANT_USE,          principal: max.approver,   resource: "assistant:chat", action: assistant.use, expected: allow, invariants: [I1] }
+  - { id: ADMIN_ASSISTANT_ALLOW,           principal: lena.admin,     resource: "assistant:chat", action: assistant.use, expected: allow, invariants: [I8] }
+  - { id: SECURITY_ADMIN_ASSISTANT_DENY,   principal: sarah.security, resource: "assistant:chat", action: assistant.use, expected: deny, reason: MISSING_PERMISSION, invariants: [I8] }
+  - { id: AUDITOR_ASSISTANT_DENY,          principal: tom.auditor,    resource: "assistant:chat", action: assistant.use, expected: deny, reason: MISSING_PERMISSION, invariants: [I8] }
+  - { id: HR_ASSISTANT_ALLOW,              principal: sophie.hr,      resource: "assistant:chat", action: assistant.use, expected: allow }
+  - { id: INGESTION_SERVICE_ASSISTANT_DENY, principal: service-account-svc-ingestion, resource: "assistant:chat", action: assistant.use, expected: deny, reason: PRINCIPAL_TYPE_NOT_ALLOWED, invariants: [I20] }
+  - { id: REPORTING_SERVICE_ASSISTANT_DENY, principal: service-account-svc-reporting, resource: "assistant:chat", action: assistant.use, expected: deny, reason: PRINCIPAL_TYPE_NOT_ALLOWED, invariants: [I20] }
+
+  - { id: BANK_CUSTOMER_DENIZ_ASSISTANT_ALLOW, principal: deniz.customer, resource: "assistant:chat", action: assistant.use, expected: allow }
+  - { id: BANK_CUSTOMER_THOMAS_ASSISTANT_ALLOW, principal: thomas.customer, resource: "assistant:chat", action: assistant.use, expected: allow }
+  - { id: BANK_CUSTOMER_MERYEM_ASSISTANT_ALLOW, principal: meryem.customer, resource: "assistant:chat", action: assistant.use, expected: allow }
+  - { id: BANK_CUSTOMER_LUCAS_ASSISTANT_ALLOW, principal: lucas.customer, resource: "assistant:chat", action: assistant.use, expected: allow }
+  - { id: BANK_CUSTOMER_ELIF_ASSISTANT_ALLOW, principal: elif.customer, resource: "assistant:chat", action: assistant.use, expected: allow }
+  - { id: BANK_CUSTOMER_EMILIA_ASSISTANT_ALLOW, principal: emilia.customer, resource: "assistant:chat", action: assistant.use, expected: allow }
+
+  # --- Human resources -----------------------------------------------------------------------
+  - { id: HR_SALARY_ALLOW,                 principal: sophie.hr,      resource: "employee:E-100", action: employee.salary.read, expected: allow, status: planned, module: hr, target: M6 }
+  - { id: ADMIN_HR_SALARY_DENY,            principal: lena.admin,     resource: "employee:E-100", action: employee.salary.read, expected: deny, reason: MISSING_PERMISSION, invariants: [I8], status: planned, module: hr, target: M6 }
+  - { id: SECURITY_HR_SALARY_DENY,         principal: sarah.security, resource: "employee:E-100", action: employee.salary.read, expected: deny, invariants: [I8], status: planned, module: hr, target: M6 }
+  - { id: AUDITOR_HR_SALARY_DENY,          principal: tom.auditor,    resource: "employee:E-100", action: employee.salary.read, expected: deny, invariants: [I8], status: planned, module: hr, target: M6 }
+
+  # --- Diagnostics and audit ----------------------------------------------------------------
+  - { id: AUDITOR_TRACE_ALLOW,             principal: tom.auditor,    resource: "diagnostics:authorization-trace", action: diagnostics.read, expected: allow, status: planned, module: audit, target: M6 }
+  - { id: ADVISOR_TRACE_DENY,              principal: anna.berater,   resource: "diagnostics:authorization-trace", action: diagnostics.read, expected: deny, reason: MISSING_PERMISSION, status: planned, module: audit, target: M6 }
+  - { id: ADMIN_TRACE_DENY,                principal: lena.admin,     resource: "diagnostics:authorization-trace", action: diagnostics.read, expected: deny, reason: MISSING_PERMISSION, invariants: [I8], status: planned, module: audit, target: M6 }
+  - { id: AUDITOR_AUDIT_READ,              principal: tom.auditor,    resource: "audit:authorization-log", action: audit.read, expected: allow, status: planned, module: audit, target: M6 }
+
+  # --- Documents: active M3 policies and real sample-docs ACL metadata -----------------------
+  - { id: SECURITY_ACL_MANAGE,             principal: sarah.security, resource: "document:DOC-106", action: document.acl.manage, expected: allow }
+  - { id: AUDITOR_ACL_MUTATION_DENY,       principal: tom.auditor,    resource: "document:DOC-106", action: document.acl.manage, expected: deny, reason: MISSING_PERMISSION }
+  - { id: ADMIN_ACL_MANAGE_DENY,           principal: lena.admin,     resource: "document:DOC-106", action: document.acl.manage, expected: deny, reason: MISSING_PERMISSION }
+  - { id: INGESTION_SERVICE_INGEST,        principal: service-account-svc-ingestion, resource: "document:DOC-101", action: document.ingest, expected: allow, invariants: [I20] }
+  - { id: REPORTING_SERVICE_INGEST_DENY,   principal: service-account-svc-reporting, resource: "document:DOC-101", action: document.ingest, expected: deny, reason: MISSING_PERMISSION, invariants: [I20] }
+  - { id: DENIZ_PUBLIC_FEES_ALLOW,       principal: deniz.customer, resource: "document:DOC-103", action: document.read, expected: allow, invariants: [I3] }
+  - { id: DENIZ_PUBLIC_2026_ALLOW,       principal: deniz.customer, resource: "document:DOC-117", action: document.read, expected: allow, invariants: [I3] }
+  - { id: THOMAS_PUBLIC_SEPA_ALLOW,      principal: thomas.customer, resource: "document:DOC-118", action: document.read, expected: allow, invariants: [I3] }
+  - { id: DENIZ_INTERNAL_DENY,          principal: deniz.customer, resource: "document:DOC-107", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: DENIZ_CREDIT_POLICY_DENY,     principal: deniz.customer, resource: "document:DOC-105", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: THOMAS_HR_RESTRICTED_DENY,    principal: thomas.customer, resource: "document:DOC-106", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: DENIZ_DOCUMENT_INGEST_DENY,   principal: deniz.customer, resource: "document:DOC-101", action: document.ingest, expected: deny, reason: MISSING_PERMISSION }
+  - { id: DENIZ_DOCUMENT_ACL_DENY,      principal: deniz.customer, resource: "document:DOC-101", action: document.acl.manage, expected: deny, reason: MISSING_PERMISSION }
+  - { id: MERYEM_PUBLIC_FEES_ALLOW, principal: meryem.customer, resource: "document:DOC-103", action: document.read, expected: allow, invariants: [I3] }
+  - { id: MERYEM_INTERNAL_DENY, principal: meryem.customer, resource: "document:DOC-107", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: LUCAS_PUBLIC_FEES_ALLOW, principal: lucas.customer, resource: "document:DOC-103", action: document.read, expected: allow, invariants: [I3] }
+  - { id: LUCAS_INTERNAL_DENY, principal: lucas.customer, resource: "document:DOC-107", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: ELIF_PUBLIC_FEES_ALLOW, principal: elif.customer, resource: "document:DOC-103", action: document.read, expected: allow, invariants: [I3] }
+  - { id: ELIF_INTERNAL_DENY, principal: elif.customer, resource: "document:DOC-107", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: EMILIA_PUBLIC_FEES_ALLOW, principal: emilia.customer, resource: "document:DOC-103", action: document.read, expected: allow, invariants: [I3] }
+  - { id: EMILIA_INTERNAL_DENY, principal: emilia.customer, resource: "document:DOC-107", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: ANNA_PUBLIC_DOC_ALLOW,           principal: anna.berater, resource: "document:DOC-101", action: document.read, expected: allow, invariants: [I3] }
+  - { id: ANNA_BRANCH_DOC_ALLOW,           principal: anna.berater, resource: "document:DOC-104", action: document.read, expected: allow, invariants: [I3] }
+  - { id: MEHMET_BRANCH_DOC_DENY,          principal: mehmet.kredit, resource: "document:DOC-104", action: document.read, expected: deny, reason: BRANCH_MISMATCH }
+  - { id: ANNA_CREDIT_DOC_DENY,            principal: anna.berater, resource: "document:DOC-105", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: MEHMET_CREDIT_DOC_ALLOW,         principal: mehmet.kredit, resource: "document:DOC-105", action: document.read, expected: allow, invariants: [I3] }
+  - { id: SOPHIE_HR_SALARY_DOC_ALLOW,      principal: sophie.hr, resource: "document:DOC-106", action: document.read, expected: allow, invariants: [I3] }
+  - { id: SOPHIE_HR_GRADES_DOC_ALLOW,      principal: sophie.hr, resource: "document:DOC-114", action: document.read, expected: allow, invariants: [I3] }
+  - { id: ANNA_HR_DOC_DENY,               principal: anna.berater, resource: "document:DOC-106", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: LENA_PUBLIC_DOC_DENY,           principal: lena.admin, resource: "document:DOC-101", action: document.read, expected: deny, reason: MISSING_PERMISSION, invariants: [I8] }
+  - { id: OLIVER_OPERATIONS_DOC_ALLOW,     principal: oliver.ops, resource: "document:DOC-109", action: document.read, expected: allow }
+  - { id: OLIVER_OPERATIONS_JSON_ALLOW,    principal: oliver.ops, resource: "document:DOC-115", action: document.read, expected: allow }
+  - { id: OLIVER_HR_DOC_DENY,              principal: oliver.ops, resource: "document:DOC-106", action: document.read, expected: deny, reason: INSUFFICIENT_CLEARANCE }
+  - { id: OLIVER_ASSISTANT_DENY,           principal: oliver.ops, resource: "assistant:chat", action: assistant.use, expected: deny, reason: MISSING_PERMISSION }
+
+  # --- Operations and platform --------------------------------------------------------------
+  - { id: REPORTING_SERVICE_OPS_READ,      principal: service-account-svc-reporting, resource: "operations:failed-jobs", action: operations.read, expected: allow, invariants: [I20], status: planned, module: operations, target: M6 }
+  - { id: INGESTION_SERVICE_OPS_DENY,      principal: service-account-svc-ingestion, resource: "operations:failed-jobs", action: operations.read, expected: deny, reason: MISSING_PERMISSION, invariants: [I20], status: planned, module: operations, target: M6 }
+  - { id: ADMIN_OPS_READ,                  principal: lena.admin,     resource: "operations:failed-jobs", action: operations.read, expected: allow, status: planned, module: operations, target: M6 }
+  - { id: ADVISOR_OPS_DENY,                principal: anna.berater,   resource: "operations:failed-jobs", action: operations.read, expected: deny, reason: MISSING_PERMISSION, status: planned, module: operations, target: M6 }
+  - { id: ADMIN_CONFIGURE,                 principal: lena.admin,     resource: "platform:settings", action: system.configure, expected: allow, status: planned, module: platform, target: M6 }
+  - { id: SECURITY_ADMIN_CONFIGURE_DENY,   principal: sarah.security, resource: "platform:settings", action: system.configure, expected: deny, reason: MISSING_PERMISSION, status: planned, module: platform, target: M6 }

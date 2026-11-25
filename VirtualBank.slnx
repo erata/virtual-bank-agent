@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/VirtualBank.Application/VirtualBank.Application.csproj" />
+    <Project Path="src/VirtualBank.Infrastructure/VirtualBank.Infrastructure.csproj" />
+    <Project Path="src/VirtualBank.Model/VirtualBank.Model.csproj" />
+    <Project Path="src/VirtualBank.Presentation/VirtualBank.Presentation.csproj" />
+    <Project Path="src/VirtualBank.Web/VirtualBank.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/VirtualBank.Specifications.Tests/VirtualBank.Specifications.Tests.csproj" />
+    <Project Path="tests/VirtualBank.Specifications/VirtualBank.Specifications.csproj" />
+    <Project Path="tests/architecture/VirtualBank.ArchitectureTests/VirtualBank.ArchitectureTests.csproj" />
+    <Project Path="tests/unit/VirtualBank.Application.UnitTests/VirtualBank.Application.UnitTests.csproj" />
+    <Project Path="tests/unit/VirtualBank.Infrastructure.UnitTests/VirtualBank.Infrastructure.UnitTests.csproj" />
+    <Project Path="tests/unit/VirtualBank.Model.UnitTests/VirtualBank.Model.UnitTests.csproj" />
+    <Project Path="tests/unit/VirtualBank.Presentation.UnitTests/VirtualBank.Presentation.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/VirtualBank.SeedGenerator/VirtualBank.SeedGenerator.csproj" />
+    <Project Path="tools/VirtualBank.DbMigrator/VirtualBank.DbMigrator.csproj" />
+  </Folder>
+</Solution>

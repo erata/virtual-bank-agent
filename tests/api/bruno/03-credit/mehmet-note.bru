@@ -1,0 +1,27 @@
+meta {
+  name: Mehmet adds a note to K-100
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{apiBaseUrl}}/api/credit/applications/K-100/notes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{mehmetToken}}
+}
+
+body:json {
+  {
+    "text": "Income documents verified."
+  }
+}
+
+tests {
+  test("status is 201", function() {
+    expect(res.getStatus()).to.equal(201);
+  });
+}

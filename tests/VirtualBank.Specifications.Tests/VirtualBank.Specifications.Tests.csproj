@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- System-wide executable specification: the authorization matrix evaluated against the policies of
+       every module (Customers, Credit), with personas from the Keycloak realm and resources from the seed fixtures. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
+    <PackageReference Include="coverlet.collector" PrivateAssets="all" />
+    <PackageReference Include="YamlDotNet" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../VirtualBank.Specifications/VirtualBank.Specifications.csproj" />
+    <ProjectReference Include="../../src/VirtualBank.Application/VirtualBank.Application.csproj" />
+  </ItemGroup>
+</Project>

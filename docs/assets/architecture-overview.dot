@@ -1,0 +1,25 @@
+digraph G {
+  graph [fontname="DejaVu Sans", rankdir=TB, bgcolor="#ffffff", pad="0.32", nodesep="0.36", ranksep="0.60", label="VirtualBank — Modular Monolith", labelloc=t, fontsize=20, fontcolor="#19324A"];
+  node [shape=box, style="rounded,filled", color="#D5E0E8", fillcolor="#F5F9FC", fontname="DejaVu Sans", fontcolor="#19324A", fontsize=12, margin="0.20,0.14"];
+  edge [color="#5A788D", arrowsize=.75];
+  Angular [label="Angular SPA\nOIDC / PKCE"];
+  Keycloak [label="Keycloak\nJWT issuer", fillcolor="#EAF4FF"];
+  Web [label="ASP.NET Core Web\nComposition Root"];
+  Presentation [label="Presentation\nHTTP endpoints"];
+  Application [label="Application\nCQRS + policies + ports", fillcolor="#E6F7EF"];
+  Model [label="Model\nDomain rules", fillcolor="#E6F7EF"];
+  Infra [label="Infrastructure\nNpgsql / EF migrations / SK / embedding", fillcolor="#FFF7E6"];
+  CustomerDb [label="Customer DB\nRLS", fillcolor="#F0F3F6"];
+  CreditDb [label="Credit DB\nRLS", fillcolor="#F0F3F6"];
+  DocsDb [label="Documents DB\npgvector + ACL", fillcolor="#F0F3F6"];
+  Provider [label="OpenRouter / OpenAI / Ollama\nChat model + embedding model", fillcolor="#F9F0FF"];
+  Angular -> Web [label="/api"];
+  Angular -> Keycloak [style=dashed, label="login"];
+  Web -> Presentation;
+  Presentation -> Application;
+  Application -> Model;
+  Web -> Infra [label="DI"];
+  Infra -> Application [label="implements ports", style=dashed];
+  Infra -> CustomerDb; Infra -> CreditDb; Infra -> DocsDb; Infra -> Provider;
+  { rank=same; CustomerDb; CreditDb; DocsDb; Provider; }
+}

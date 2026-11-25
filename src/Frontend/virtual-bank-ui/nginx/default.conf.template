@@ -1,0 +1,43 @@
+# Rendered at container start by the nginx image (envsubst over the variables set in compose).
+# One origin for the browser: static app, runtime config and /api reverse proxy. No CORS needed,
+# and the access token is only ever sent to this origin.
+server {
+    listen       8080;
+    server_name  _;
+    server_tokens off;
+    root   /usr/share/nginx/html;
+
+    # Runtime configuration for the SPA. Nothing secret: the UI is a public PKCE client.
+    location = /config.json {
+        include /tmp/nginx-snippets/security-headers.conf;
+        add_header Cache-Control "no-store" always;
+        default_type application/json;
+        return 200 '{"keycloakUrl":"${KEYCLOAK_PUBLIC_URL}","realm":"${KEYCLOAK_REALM}","clientId":"${KEYCLOAK_UI_CLIENT}"}';
+    }
+
+    location = /healthz {
+        access_log off;
+        default_type text/plain;
+        return 200 'ok';
+    }
+
+    # All business routes live in one API; it answers 404 for unknown /api paths itself,
+    # so nothing under /api/ ever falls through to the SPA.
+    location /api/ {
+        include /tmp/nginx-snippets/proxy.conf;
+        proxy_pass http://${API_UPSTREAM};
+    }
+
+    # Hashed bundles are immutable; index.html must always be revalidated.
+    location ~* \.(?:js|css|woff2?|ico|png|svg)$ {
+        include /tmp/nginx-snippets/security-headers.conf;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri =404;
+    }
+
+    location / {
+        include /tmp/nginx-snippets/security-headers.conf;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri $uri/ /index.html;
+    }
+}

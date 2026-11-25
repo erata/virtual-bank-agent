@@ -1,0 +1,24 @@
+{
+  "documentId": "DOC-130",
+  "title": "Gebühren FAQ 2026",
+  "language": "de",
+  "status": "synthetic-demo",
+  "faq": [
+    {
+      "question": "Aktuelle Gebühren",
+      "answer": "Für die 2026 gültigen synthetischen Gebühren gilt DOC-117: Kontoführung 4,90 EUR pro Monat, Instant-SEPA online 0,00 EUR, Papierauftrag 2,00 EUR."
+    },
+    {
+      "question": "Frühere Preise",
+      "answer": "Die Archivversion DOC-116 für 2024 enthielt 5,90 EUR monatliche Kontoführung und 0,80 EUR für Instant-SEPA. Historische Preise dürfen nicht als aktuelle Gebühren dargestellt werden."
+    },
+    {
+      "question": "Kundenrechte",
+      "answer": "Der Kunde darf öffentliche FAQ und Gebühreninformationen mit einem authentifizierten Konto abrufen. Das erlaubt niemals das Lesen interner Kredit- oder Personalakten."
+    },
+    {
+      "question": "Geltungsbereich",
+      "answer": "Alle Beträge sind ausdrücklich synthetische Beispiele für eine technische Referenzapplikation."
+    }
+  ]
+}

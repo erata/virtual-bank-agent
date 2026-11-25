@@ -1,0 +1,30 @@
+meta {
+  name: Approver may not write notes
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{apiBaseUrl}}/api/credit/applications/K-100/notes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{maxToken}}
+}
+
+body:json {
+  {
+    "text": "Looks fine."
+  }
+}
+
+tests {
+  test("status is 403", function() {
+    expect(res.getStatus()).to.equal(403);
+  });
+  test("notice code is CREDIT_NOTE_PERMISSION_REQUIRED", function() {
+    expect(res.getBody().noticeCode).to.equal("CREDIT_NOTE_PERMISSION_REQUIRED");
+  });
+}

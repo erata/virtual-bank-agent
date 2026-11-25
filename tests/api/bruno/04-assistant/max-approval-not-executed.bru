@@ -1,0 +1,22 @@
+meta {
+  name: Approver: a prepared approval changes nothing until confirmed
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{apiBaseUrl}}/api/credit/applications/K-100
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{maxToken}}
+}
+
+tests {
+  test("K-100 is still submitted after the assistant prepared its approval", function() {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().status.toUpperCase()).to.equal("SUBMITTED");
+  });
+}

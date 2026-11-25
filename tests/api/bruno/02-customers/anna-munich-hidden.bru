@@ -1,0 +1,21 @@
+meta {
+  name: Anna cannot see Munich customer C-5001
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers/C-5001
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{annaToken}}
+}
+
+tests {
+  test("status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

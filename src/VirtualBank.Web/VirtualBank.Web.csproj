@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <!-- Host: Program.cs, composition root, configuration. One API for both modules (Customers, Credit);
+       each module still reaches only its own database with its own least-privilege DB login. -->
+  <PropertyGroup>
+    <RootNamespace>VirtualBank.Web</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../VirtualBank.Presentation/VirtualBank.Presentation.csproj" />
+    <ProjectReference Include="../VirtualBank.Infrastructure/VirtualBank.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

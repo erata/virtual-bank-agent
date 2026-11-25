@@ -1,0 +1,482 @@
+[
+  {
+    "id": "DOC-101",
+    "title": "VirtualBank Account Product Overview",
+    "path": "public/accounts.pdf",
+    "language": "en",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-102",
+    "title": "Branch Customer Service Policy",
+    "path": "public/branches.pdf",
+    "language": "de",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-103",
+    "title": "Public Fees and Conditions",
+    "path": "public/fees.pdf",
+    "language": "en",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-104",
+    "title": "Interne Einarbeitung",
+    "path": "internal/staff-onboarding.docx",
+    "language": "de",
+    "classification": 1,
+    "branch": "STR",
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "customer-advisor",
+        "effect": "allow"
+      },
+      {
+        "subjectKind": "role",
+        "subjectValue": "credit-analyst",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-105",
+    "title": "Kreditfreigabe Richtlinie",
+    "path": "credit/approval-guidelines.docx",
+    "language": "de",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "group",
+        "subjectValue": "/Credit",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-106",
+    "title": "İnsan Kaynakları Maaş Bantları",
+    "path": "hr/salary-bands.docx",
+    "language": "tr",
+    "classification": 3,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "hr-specialist",
+        "effect": "allow"
+      },
+      {
+        "subjectKind": "role",
+        "subjectValue": "platform-admin",
+        "effect": "deny"
+      }
+    ]
+  },
+  {
+    "id": "DOC-107",
+    "title": "Security and Authorization Handbook",
+    "path": "internal/security-basics.md",
+    "language": "en",
+    "classification": 1,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "customer-advisor",
+        "effect": "allow"
+      },
+      {
+        "subjectKind": "role",
+        "subjectValue": "credit-analyst",
+        "effect": "allow"
+      },
+      {
+        "subjectKind": "role",
+        "subjectValue": "credit-approver",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-108",
+    "title": "Kredi İstisna Yönetimi",
+    "path": "credit/credit-exceptions.md",
+    "language": "tr",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "group",
+        "subjectValue": "/Credit",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-109",
+    "title": "IT Operations Incident Runbook",
+    "path": "operations/runbook.md",
+    "language": "en",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "operations-operator",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-110",
+    "title": "VirtualBank Public FAQ",
+    "path": "public/faq.txt",
+    "language": "en",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-111",
+    "title": "IT-Sicherheit und Zugriffsgrenzen",
+    "path": "internal/it-security.txt",
+    "language": "de",
+    "classification": 1,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "customer-advisor",
+        "effect": "allow"
+      },
+      {
+        "subjectKind": "role",
+        "subjectValue": "credit-analyst",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-112",
+    "title": "Adversarial Instruction Test Fixture",
+    "path": "credit/prompt-injection-fixture.txt",
+    "language": "en",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "group",
+        "subjectValue": "/Credit",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-113",
+    "title": "Credit Scoring Assessment Model",
+    "path": "credit/scoring-model.json",
+    "language": "en",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "group",
+        "subjectValue": "/Credit",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-114",
+    "title": "İK Kariyer Seviyeleri",
+    "path": "hr/job-levels.json",
+    "language": "tr",
+    "classification": 3,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "hr-specialist",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-115",
+    "title": "Wiederherstellung nach Betriebsstörungen",
+    "path": "operations/incident-playbook.json",
+    "language": "de",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "operations-operator",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-116",
+    "title": "Archived Retail Fee Schedule 2024",
+    "path": "public/fees-2024-archive.pdf",
+    "language": "en",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-117",
+    "title": "Current Retail Fee Schedule 2026",
+    "path": "public/fees-2026-current.pdf",
+    "language": "en",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-118",
+    "title": "SEPA Havale ve Ödeme Rehberi 2026",
+    "path": "public/sepa-transfers-guide-tr.pdf",
+    "language": "tr",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-119",
+    "title": "SEPA Überweisungen und Daueraufträge 2026",
+    "path": "public/sepa-transfer-guide-de.pdf",
+    "language": "de",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-120",
+    "title": "Dijital Bankacılık Erişilebilirlik ve Destek",
+    "path": "public/accessibility-and-support.md",
+    "language": "tr",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-121",
+    "title": "Interner Filialleitfaden Stuttgart 2026",
+    "path": "internal/branch-onboarding-2026.pdf",
+    "language": "de",
+    "classification": 1,
+    "branch": "STR",
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "customer-advisor",
+        "effect": "allow"
+      },
+      {
+        "subjectKind": "role",
+        "subjectValue": "credit-analyst",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-122",
+    "title": "Archived Credit Approval Policy 2023",
+    "path": "credit/approval-policy-2023-archive.docx",
+    "language": "en",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "group",
+        "subjectValue": "/Credit",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-123",
+    "title": "Aktuelle Kreditfreigaberichtlinie 2026",
+    "path": "credit/approval-policy-2026-current.docx",
+    "language": "de",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "group",
+        "subjectValue": "/Credit",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-124",
+    "title": "Kredi İstisna Onay Akışı 2026",
+    "path": "credit/exception-workflow-2026-tr.md",
+    "language": "tr",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "group",
+        "subjectValue": "/Credit",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-125",
+    "title": "Secured Lending Collateral Procedures 2026",
+    "path": "credit/secured-lending-2026.md",
+    "language": "en",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "group",
+        "subjectValue": "/Credit",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-126",
+    "title": "HR Compensation Review Framework 2026",
+    "path": "hr/compensation-review-2026.docx",
+    "language": "en",
+    "classification": 3,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "hr-specialist",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-127",
+    "title": "Incident Severity und Eskalation 2026",
+    "path": "operations/incident-severity-matrix-2026.docx",
+    "language": "de",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "operations-operator",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-128",
+    "title": "Yedekleme ve Kurtarma Tatbikatı 2026",
+    "path": "operations/backup-recovery-2026.txt",
+    "language": "tr",
+    "classification": 2,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "role",
+        "subjectValue": "operations-operator",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-129",
+    "title": "Card Disputes Customer FAQ 2026",
+    "path": "public/card-disputes-faq-2026.txt",
+    "language": "en",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  },
+  {
+    "id": "DOC-130",
+    "title": "Gebühren FAQ 2026",
+    "path": "public/fee-faq-2026.json",
+    "language": "de",
+    "classification": 0,
+    "branch": null,
+    "acl": [
+      {
+        "subjectKind": "public",
+        "subjectValue": "*",
+        "effect": "allow"
+      }
+    ]
+  }
+]

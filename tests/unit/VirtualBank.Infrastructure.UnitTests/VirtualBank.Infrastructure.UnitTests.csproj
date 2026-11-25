@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Infrastructure: claims → principal, Keycloak backchannel rewriting, signing-key readiness. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
+    <PackageReference Include="coverlet.collector" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/VirtualBank.Infrastructure/VirtualBank.Infrastructure.csproj" />
+    <ProjectReference Include="../../VirtualBank.Specifications/VirtualBank.Specifications.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,24 @@
+meta {
+  name: Anna lists only Stuttgart customers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{apiBaseUrl}}/api/customers
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{annaToken}}
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("visible customers are exactly the expected set", function() {
+    expect(res.getBody().map(c => c.id)).to.deep.equal(["C-1002", "C-1003", "C-1004"]);
+  });
+}

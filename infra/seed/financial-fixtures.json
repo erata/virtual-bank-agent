@@ -1,0 +1,258 @@
+{
+  "scheduledPayments": [
+    {
+      "id": "P-2001-01",
+      "customerId": "C-2001",
+      "description": "Elektrik faturası",
+      "amount": 89.9,
+      "currency": "EUR",
+      "daysFromToday": 3,
+      "status": "planned"
+    },
+    {
+      "id": "P-2001-02",
+      "customerId": "C-2001",
+      "description": "Kira",
+      "amount": 890,
+      "currency": "EUR",
+      "daysFromToday": 5,
+      "status": "planned"
+    },
+    {
+      "id": "P-2001-03",
+      "customerId": "C-2001",
+      "description": "İnternet",
+      "amount": 29.99,
+      "currency": "EUR",
+      "daysFromToday": 24,
+      "status": "planned"
+    },
+    {
+      "id": "P-2001-04",
+      "customerId": "C-2001",
+      "description": "USD abonelik",
+      "amount": 15.0,
+      "currency": "USD",
+      "daysFromToday": 6,
+      "status": "planned"
+    },
+    {
+      "id": "P-2001-05",
+      "customerId": "C-2001",
+      "description": "TRY aile ödemesi",
+      "amount": 4000,
+      "currency": "TRY",
+      "daysFromToday": 9,
+      "status": "planned"
+    },
+    {
+      "id": "P-5001-01",
+      "customerId": "C-5001",
+      "description": "Miete",
+      "amount": 1200,
+      "currency": "EUR",
+      "daysFromToday": 3,
+      "status": "planned"
+    },
+    {
+      "id": "P-2002-01",
+      "customerId": "C-2002",
+      "description": "Kira",
+      "amount": 750,
+      "currency": "EUR",
+      "daysFromToday": 8,
+      "status": "planned"
+    },
+    {
+      "id": "P-2003-01",
+      "customerId": "C-2003",
+      "description": "Phone",
+      "amount": 28,
+      "currency": "EUR",
+      "daysFromToday": 2,
+      "status": "planned"
+    },
+    {
+      "id": "P-5003-01",
+      "customerId": "C-5003",
+      "description": "Akaryakıt",
+      "amount": 1800,
+      "currency": "TRY",
+      "daysFromToday": 11,
+      "status": "planned"
+    },
+    {
+      "id": "P-5004-01",
+      "customerId": "C-5004",
+      "description": "Utilities",
+      "amount": 105,
+      "currency": "EUR",
+      "daysFromToday": 4,
+      "status": "planned"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "T-2001-01",
+      "customerId": "C-2001",
+      "description": "Supermarkt",
+      "amount": -72.4,
+      "currency": "EUR",
+      "daysFromToday": -2
+    },
+    {
+      "id": "T-2001-02",
+      "customerId": "C-2001",
+      "description": "Gehalt",
+      "amount": 2800,
+      "currency": "EUR",
+      "daysFromToday": -10
+    },
+    {
+      "id": "T-2001-03",
+      "customerId": "C-2001",
+      "description": "Restaurant",
+      "amount": -35.6,
+      "currency": "EUR",
+      "daysFromToday": -28
+    },
+    {
+      "id": "T-2001-04",
+      "customerId": "C-2001",
+      "description": "USD payment",
+      "amount": -25.95,
+      "currency": "USD",
+      "daysFromToday": -9
+    },
+    {
+      "id": "T-2001-05",
+      "customerId": "C-2001",
+      "description": "TRY transfer",
+      "amount": -1500,
+      "currency": "TRY",
+      "daysFromToday": -7
+    },
+    {
+      "id": "T-5001-01",
+      "customerId": "C-5001",
+      "description": "Tankstelle",
+      "amount": -75,
+      "currency": "EUR",
+      "daysFromToday": -3
+    },
+    {
+      "id": "T-2002-01",
+      "customerId": "C-2002",
+      "description": "Online order",
+      "amount": -24,
+      "currency": "USD",
+      "daysFromToday": -6
+    },
+    {
+      "id": "T-2003-01",
+      "customerId": "C-2003",
+      "description": "ATM",
+      "amount": -100,
+      "currency": "EUR",
+      "daysFromToday": -12
+    },
+    {
+      "id": "T-5003-01",
+      "customerId": "C-5003",
+      "description": "Market",
+      "amount": -350,
+      "currency": "TRY",
+      "daysFromToday": -4
+    },
+    {
+      "id": "T-5004-01",
+      "customerId": "C-5004",
+      "description": "Gas",
+      "amount": -72,
+      "currency": "EUR",
+      "daysFromToday": -2
+    }
+  ],
+  "standingOrders": [
+    {
+      "id": "SO-2001-01",
+      "customerId": "C-2001",
+      "description": "Sparplan",
+      "amount": 150,
+      "currency": "EUR",
+      "frequency": "monthly",
+      "daysFromToday": 8,
+      "active": true
+    },
+    {
+      "id": "SO-2001-02",
+      "customerId": "C-2001",
+      "description": "Mitgliedschaft",
+      "amount": 24,
+      "currency": "EUR",
+      "frequency": "monthly",
+      "daysFromToday": 12,
+      "active": true
+    },
+    {
+      "id": "SO-2001-03",
+      "customerId": "C-2001",
+      "description": "Düzenli TRY transfer",
+      "amount": 2400,
+      "currency": "TRY",
+      "frequency": "monthly",
+      "daysFromToday": 16,
+      "active": true
+    },
+    {
+      "id": "SO-5001-01",
+      "customerId": "C-5001",
+      "description": "Miete",
+      "amount": 1200,
+      "currency": "EUR",
+      "frequency": "monthly",
+      "daysFromToday": 5,
+      "active": true
+    },
+    {
+      "id": "SO-2002-01",
+      "customerId": "C-2002",
+      "description": "Insurance",
+      "amount": 65,
+      "currency": "EUR",
+      "frequency": "monthly",
+      "daysFromToday": 6,
+      "active": true
+    },
+    {
+      "id": "SO-2003-01",
+      "customerId": "C-2003",
+      "description": "Savings",
+      "amount": 100,
+      "currency": "USD",
+      "frequency": "monthly",
+      "daysFromToday": 9,
+      "active": true
+    },
+    {
+      "id": "SO-5003-01",
+      "customerId": "C-5003",
+      "description": "Okul",
+      "amount": 2500,
+      "currency": "TRY",
+      "frequency": "monthly",
+      "daysFromToday": 15,
+      "active": true
+    },
+    {
+      "id": "SO-5004-01",
+      "customerId": "C-5004",
+      "description": "Investment",
+      "amount": 400,
+      "currency": "EUR",
+      "frequency": "monthly",
+      "daysFromToday": 10,
+      "active": true
+    }
+  ]
+}

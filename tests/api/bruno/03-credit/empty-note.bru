@@ -1,0 +1,27 @@
+meta {
+  name: Empty note is a validation error
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{apiBaseUrl}}/api/credit/applications/K-100/notes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{mehmetToken}}
+}
+
+body:json {
+  {
+    "text": "   "
+  }
+}
+
+tests {
+  test("status is 400", function() {
+    expect(res.getStatus()).to.equal(400);
+  });
+}

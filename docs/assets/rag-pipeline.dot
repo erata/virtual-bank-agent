@@ -1,0 +1,14 @@
+digraph G {
+  graph [fontname="DejaVu Sans", rankdir=TB,bgcolor="white",pad=.25,nodesep=.3,ranksep=.52,label="Secure multilingual RAG — retrieval is not authorization",labelloc=t,fontsize=18,fontcolor="#19324A"];
+  node [shape=box,style="rounded,filled",fontname="DejaVu Sans",fontsize=11,color="#D5E0E8",fillcolor="#F7FAFC",fontcolor="#19324A"];
+  edge [arrowsize=.7,color="#69869B"];
+  Sources [label="PDF · DOCX · MD · TXT · JSON\nwith document ACL metadata"];
+  Parser [label="Parse → chunk → embed\nmodel ID + dimensions"];
+  Index [label="PostgreSQL docs DB\npgvector + HNSW",fillcolor="#EFF3FD"];
+  Query [label="Question TR / DE / EN\nembedding (same model)"];
+  Filter [label="SQL RLS + ACL before top-K\nclearance + group + deny",fillcolor="#E6F7EF"];
+  App [label="Application policy re-check\nfail closed",fillcolor="#E6F7EF"];
+  LLM [label="LLM context contains\nAUTHORIZED chunks only",fillcolor="#FFF2DD"];
+  Sources -> Parser -> Index -> Filter -> App -> LLM;
+  Query -> Filter;
+}

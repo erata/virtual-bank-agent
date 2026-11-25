@@ -1,0 +1,1022 @@
+{
+  "realm": "virtual-bank",
+  "displayName": "Virtual Bank (fictional)",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": false,
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 1800,
+  "revokeRefreshToken": true,
+  "bruteForceProtected": true,
+  "roles": {
+    "realm": [
+      {
+        "name": "platform-admin",
+        "description": "Platform administration without business-data access."
+      },
+      {
+        "name": "security-admin",
+        "description": "Document ACL administration without content access."
+      },
+      {
+        "name": "auditor",
+        "description": "Read-only audit and privileged diagnostics."
+      },
+      {
+        "name": "customer-advisor",
+        "description": "Branch customer advisor."
+      },
+      {
+        "name": "credit-analyst",
+        "description": "Credit analyst for assigned applications."
+      },
+      {
+        "name": "credit-approver",
+        "description": "Approves credit applications within an approval limit."
+      },
+      {
+        "name": "hr-specialist",
+        "description": "Human resources specialist."
+      },
+      {
+        "name": "operations-operator",
+        "description": "IT operations operator."
+      },
+      {
+        "name": "svc-ingestion",
+        "description": "Machine role for document ingestion."
+      },
+      {
+        "name": "svc-reporting",
+        "description": "Machine role for operations reporting."
+      },
+      {
+        "name": "bank-customer",
+        "description": "Bank customer with subject-bound self-service access"
+      }
+    ]
+  },
+  "groups": [
+    {
+      "id": "00000000-0000-4000-8000-000000000101",
+      "name": "Customer",
+      "path": "/Customer",
+      "subGroups": [
+        {
+          "id": "00000000-0000-4000-8000-000000000102",
+          "name": "Stuttgart",
+          "path": "/Customer/Stuttgart",
+          "subGroups": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000103",
+          "name": "Munich",
+          "path": "/Customer/Munich",
+          "subGroups": []
+        }
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000104",
+      "name": "Credit",
+      "path": "/Credit",
+      "subGroups": [
+        {
+          "id": "00000000-0000-4000-8000-000000000105",
+          "name": "Analysis",
+          "path": "/Credit/Analysis",
+          "subGroups": []
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000106",
+          "name": "Approval",
+          "path": "/Credit/Approval",
+          "subGroups": []
+        }
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000107",
+      "name": "HR",
+      "path": "/HR",
+      "subGroups": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000108",
+      "name": "IT",
+      "path": "/IT",
+      "subGroups": [
+        {
+          "id": "00000000-0000-4000-8000-000000000109",
+          "name": "Operations",
+          "path": "/IT/Operations",
+          "subGroups": []
+        }
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000110",
+      "name": "Security",
+      "path": "/Security",
+      "subGroups": [
+        {
+          "id": "00000000-0000-4000-8000-000000000111",
+          "name": "Audit",
+          "path": "/Security/Audit",
+          "subGroups": []
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "username": "lena.admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Lena",
+      "lastName": "Albrecht",
+      "email": "lena.admin@virtual-bank.example",
+      "attributes": {
+        "department": [
+          "IT"
+        ],
+        "clearance": [
+          "internal"
+        ],
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "platform-admin"
+      ],
+      "groups": [
+        "/IT/Operations"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "username": "sarah.security",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Sarah",
+      "lastName": "Schulte",
+      "email": "sarah.security@virtual-bank.example",
+      "attributes": {
+        "department": [
+          "Security"
+        ],
+        "clearance": [
+          "internal"
+        ],
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "security-admin"
+      ],
+      "groups": [
+        "/Security"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "username": "tom.auditor",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Tom",
+      "lastName": "Keller",
+      "email": "tom.auditor@virtual-bank.example",
+      "attributes": {
+        "department": [
+          "Security"
+        ],
+        "clearance": [
+          "internal"
+        ],
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "auditor"
+      ],
+      "groups": [
+        "/Security/Audit"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "username": "anna.berater",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Anna",
+      "lastName": "Berger",
+      "email": "anna.berater@virtual-bank.example",
+      "attributes": {
+        "department": [
+          "CustomerService"
+        ],
+        "branch": [
+          "STR"
+        ],
+        "clearance": [
+          "internal"
+        ],
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "customer-advisor"
+      ],
+      "groups": [
+        "/Customer/Stuttgart"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000005",
+      "username": "mehmet.kredit",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Mehmet",
+      "lastName": "Kaya",
+      "email": "mehmet.kredit@virtual-bank.example",
+      "attributes": {
+        "department": [
+          "Credit"
+        ],
+        "clearance": [
+          "confidential"
+        ],
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "credit-analyst"
+      ],
+      "groups": [
+        "/Credit/Analysis"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000006",
+      "username": "max.approver",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Max",
+      "lastName": "Vogel",
+      "email": "max.approver@virtual-bank.example",
+      "attributes": {
+        "department": [
+          "Credit"
+        ],
+        "clearance": [
+          "confidential"
+        ],
+        "approvalLimit": [
+          "50000"
+        ],
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "credit-approver"
+      ],
+      "groups": [
+        "/Credit/Approval"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000007",
+      "username": "sophie.hr",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Sophie",
+      "lastName": "Lang",
+      "email": "sophie.hr@virtual-bank.example",
+      "attributes": {
+        "department": [
+          "HR"
+        ],
+        "clearance": [
+          "strictly_confidential"
+        ],
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "hr-specialist"
+      ],
+      "groups": [
+        "/HR"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000008",
+      "username": "service-account-svc-ingestion",
+      "enabled": true,
+      "serviceAccountClientId": "svc-ingestion",
+      "attributes": {
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "svc-ingestion"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000009",
+      "username": "service-account-svc-reporting",
+      "enabled": true,
+      "serviceAccountClientId": "svc-reporting",
+      "attributes": {
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "svc-reporting"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000010",
+      "username": "oliver.ops",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Oliver",
+      "lastName": "Weber",
+      "email": "oliver.ops@virtual-bank.example",
+      "attributes": {
+        "department": [
+          "IT/Operations"
+        ],
+        "clearance": [
+          "confidential"
+        ],
+        "employmentStatus": [
+          "active"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "operations-operator"
+      ],
+      "groups": [
+        "/IT/Operations"
+      ]
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000011",
+      "username": "deniz.customer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Deniz",
+      "lastName": "Kaya",
+      "email": "deniz.customer@virtual-bank.example",
+      "attributes": {
+        "branch": [
+          "MUC"
+        ],
+        "clearance": [
+          "public"
+        ],
+        "employmentStatus": [
+          "active"
+        ],
+        "customerId": [
+          "C-2001"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "bank-customer"
+      ],
+      "groups": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000012",
+      "username": "thomas.customer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Thomas",
+      "lastName": "Huber",
+      "email": "thomas.customer@virtual-bank.example",
+      "attributes": {
+        "branch": [
+          "MUC"
+        ],
+        "clearance": [
+          "public"
+        ],
+        "employmentStatus": [
+          "active"
+        ],
+        "customerId": [
+          "C-5001"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "bank-customer"
+      ],
+      "groups": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000013",
+      "username": "meryem.customer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Meryem",
+      "lastName": "Demir",
+      "email": "meryem.customer@virtual-bank.example",
+      "attributes": {
+        "branch": [
+          "MUC"
+        ],
+        "clearance": [
+          "public"
+        ],
+        "employmentStatus": [
+          "active"
+        ],
+        "customerId": [
+          "C-2002"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "bank-customer"
+      ],
+      "groups": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000014",
+      "username": "lucas.customer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Lucas",
+      "lastName": "Schneider",
+      "email": "lucas.customer@virtual-bank.example",
+      "attributes": {
+        "branch": [
+          "MUC"
+        ],
+        "clearance": [
+          "public"
+        ],
+        "employmentStatus": [
+          "active"
+        ],
+        "customerId": [
+          "C-2003"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "bank-customer"
+      ],
+      "groups": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000015",
+      "username": "elif.customer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Elif",
+      "lastName": "Yılmaz",
+      "email": "elif.customer@virtual-bank.example",
+      "attributes": {
+        "branch": [
+          "MUC"
+        ],
+        "clearance": [
+          "public"
+        ],
+        "employmentStatus": [
+          "active"
+        ],
+        "customerId": [
+          "C-5003"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "bank-customer"
+      ],
+      "groups": []
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000016",
+      "username": "emilia.customer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Emilia",
+      "lastName": "Fischer",
+      "email": "emilia.customer@virtual-bank.example",
+      "attributes": {
+        "branch": [
+          "MUC"
+        ],
+        "clearance": [
+          "public"
+        ],
+        "employmentStatus": [
+          "active"
+        ],
+        "customerId": [
+          "C-5004"
+        ]
+      },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "VirtualBank-Dev-2026!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-virtual-bank",
+        "bank-customer"
+      ],
+      "groups": []
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "virtual-bank-ui",
+      "name": "VirtualBank UI",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:4200/*"
+      ],
+      "webOrigins": [
+        "http://localhost:4200"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:4200/*"
+      },
+      "protocolMappers": [
+        {
+          "name": "groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-group-membership-mapper",
+          "config": {
+            "full.path": "true",
+            "claim.name": "groups",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "branch",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "branch",
+            "claim.name": "branch",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "department",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "department",
+            "claim.name": "department",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "clearance",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "clearance",
+            "claim.name": "clearance",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "approval_limit",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "approvalLimit",
+            "claim.name": "approval_limit",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "employment_status",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "employmentStatus",
+            "claim.name": "employment_status",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "audience-virtual-bank-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "virtual-bank-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "virtual-bank-cli",
+      "name": "Development-only CLI client (Bruno, integration tests)",
+      "description": "DEVELOPMENT ONLY. Uses the resource owner password grant so automated API tests can obtain user tokens. Never enable in production. See ADR-0004.",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "protocolMappers": [
+        {
+          "name": "groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-group-membership-mapper",
+          "config": {
+            "full.path": "true",
+            "claim.name": "groups",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "branch",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "branch",
+            "claim.name": "branch",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "department",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "department",
+            "claim.name": "department",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "clearance",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "clearance",
+            "claim.name": "clearance",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "approval_limit",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "approvalLimit",
+            "claim.name": "approval_limit",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "employment_status",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "employmentStatus",
+            "claim.name": "employment_status",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "audience-virtual-bank-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "virtual-bank-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "virtual-bank-api",
+      "name": "VirtualBank API (resource server, audience only)",
+      "enabled": true,
+      "publicClient": false,
+      "bearerOnly": false,
+      "secret": "virtual-bank-api-dev-only-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false
+    },
+    {
+      "clientId": "agent-service",
+      "name": "Agent Service",
+      "description": "Confidential client. Standard token exchange is enabled in M5.",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "agent-service-dev-only-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "attributes": {
+        "standard.token.exchange.enabled": "false"
+      }
+    },
+    {
+      "clientId": "svc-ingestion",
+      "name": "Ingestion worker",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "svc-ingestion-dev-only-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": true,
+      "protocolMappers": [
+        {
+          "name": "employment_status",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "employmentStatus",
+            "claim.name": "employment_status",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "principal_type",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "config": {
+            "claim.name": "principal_type",
+            "claim.value": "machine",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "audience-virtual-bank-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "virtual-bank-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "svc-reporting",
+      "name": "Operations reporting",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "svc-reporting-dev-only-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": true,
+      "protocolMappers": [
+        {
+          "name": "employment_status",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "employmentStatus",
+            "claim.name": "employment_status",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true",
+            "multivalued": "false"
+          }
+        },
+        {
+          "name": "principal_type",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "config": {
+            "claim.name": "principal_type",
+            "claim.value": "machine",
+            "jsonType.label": "String",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"unmanagedAttributePolicy\": \"ADMIN_VIEW\", \"attributes\": [{\"name\": \"username\", \"displayName\": \"${username}\", \"validations\": {\"length\": {\"min\": 3, \"max\": 255}}, \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"email\", \"displayName\": \"${email}\", \"validations\": {\"email\": {}, \"length\": {\"max\": 255}}, \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"firstName\", \"displayName\": \"${firstName}\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"lastName\", \"displayName\": \"${lastName}\", \"permissions\": {\"view\": [\"admin\", \"user\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"branch\", \"displayName\": \"branch\", \"permissions\": {\"view\": [\"admin\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"department\", \"displayName\": \"department\", \"permissions\": {\"view\": [\"admin\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"clearance\", \"displayName\": \"clearance\", \"permissions\": {\"view\": [\"admin\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"approvalLimit\", \"displayName\": \"approvalLimit\", \"permissions\": {\"view\": [\"admin\"], \"edit\": [\"admin\"]}, \"multivalued\": false}, {\"name\": \"employmentStatus\", \"displayName\": \"employmentStatus\", \"permissions\": {\"view\": [\"admin\"], \"edit\": [\"admin\"]}, \"multivalued\": false}], \"groups\": []}"
+          ]
+        }
+      }
+    ]
+  }
+}

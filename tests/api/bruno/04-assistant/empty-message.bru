@@ -1,0 +1,27 @@
+meta {
+  name: Empty message is rejected
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{apiBaseUrl}}/api/assistant/chat
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{annaToken}}
+}
+
+body:json {
+  {
+    "message": "   "
+  }
+}
+
+tests {
+  test("status is 400", function() {
+    expect(res.getStatus()).to.equal(400);
+  });
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Mehmet lists his assigned applications
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiBaseUrl}}/api/credit/applications
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{mehmetToken}}
+}
+
+tests {
+  test("status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("assigned applications only", function() {
+    expect(res.getBody().map(a => a.id)).to.deep.equal(["K-100", "K-101", "K-102"]);
+  });
+}
